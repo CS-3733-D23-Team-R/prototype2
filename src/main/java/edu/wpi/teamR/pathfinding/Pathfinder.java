@@ -83,7 +83,7 @@ public class Pathfinder {
         int yDif = abs(currNode.getYCoord() - nextNode.getYCoord());
         int zDif = abs(floorNumAsInt(currNode.floorNum() - floorNumAsInt(nextNodeID.floorNum()));
 
-        if (currNode.getNodeType().equals("STAI")) && nextNode.getNodeType.equals("STAI")) {
+        if (currNode.getNodeType().equals("STAI") && nextNode.getNodeType.equals("STAI")) {
             zDif = zDif * zDifMultiplier * 2;
         } else {
             zDif = zDif * zDifMultiplier;
