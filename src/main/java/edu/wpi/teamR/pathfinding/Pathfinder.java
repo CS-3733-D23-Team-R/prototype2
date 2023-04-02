@@ -48,11 +48,9 @@ public class Pathfinder {
         return path;
     }
 
-    //TODO - actually return a hueristic
     private int hueristic(String nodeID, String endID){
         //returns A* hueristic for node
-
-        return 0;
+        return nodeDist(nodeID, endID, 200);
     }
 
     private ArrayList<String> findNeighboringNodes(String nodeID, String endID) throws Exception {
@@ -73,24 +71,25 @@ public class Pathfinder {
     }
 
     private int nodeDist(String currentNodeID, String nextNodeID) {
-        return nodeDist(currentNodeID, nextNodeID, 0);
+        return nodeDist(currentNodeID, nextNodeID, 100);
     }
 
-    //TODO account for changing floors
-    private int nodeDist(String currentNodeID, String nextNodeID, int constant) {
+    private int nodeDist(String currentNodeID, String nextNodeID, int zDifMultiplier) {
         //finds difference in x,y
         Node currNode = nodes.getNodeByID(currentNodeID);
         Node nextNode = nodes.getNodeByID(nextNodeID);
 
         int xDif = abs(currNode.getXCoord() - nextNode.getXCoord());
         int yDif = abs(currNode.getYCoord() - nextNode.getYCoord());
-        int zDif = 0;
+        int zDif = abs(floorNumAsInt(currNode.floorNum() - floorNumAsInt(nextNodeID.floorNum()));
 
         if (currNode.getNodeType().equals("STAI")) && nextNode.getNodeType.equals("STAI")) {
-            zDif = 1000;
+            zDif = zDif * zDifMultiplier * 2;
+        } else {
+            zDif = zDif * zDifMultiplier;
         }
 
-        return xDif + yDif; //returns distance
+        return xDif + yDif + zDif; //returns distance
     }
 
     //outputs the floor number 0 indexed from the lowest floor (L2)
