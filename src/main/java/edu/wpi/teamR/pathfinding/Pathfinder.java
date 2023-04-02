@@ -1,0 +1,90 @@
+package edu.wpi.teamR.pathfinding;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+
+import static java.lang.Math.abs;
+
+public class Pathfinder {
+    private NodeDAO nodes;
+    private EdgeDAO edges;
+    public Pathfinder(NodeDAO nodes, EdgeDAO edges) {
+        this.nodes = nodes;
+        this.edges = edges;
+    }
+
+    public Path aStarPath(String startID, String endID) throws Exception{
+        Path path = new Path();
+        HashMap<String, String> cameFrom = new HashMap<>();
+        HashMap<String, Integer> costSoFar = new HashMap<>();
+        PriorityQueue<QueueNode> pQueue = new PriorityQueue<>();
+        pQueue.add(new QueueNode(startID, 0));
+        String currentNode;
+        while(!pQueue.isEmpty()){
+            currentNode = pQueue.remove().getNodeID();
+
+            if(currentNode.equals(endID)){ break; }
+
+            ArrayList<String> neighbors = edges.getConnectedNodes(currentNode);
+            for (String neighbor : neighbors) {
+                int newCost = costSoFar.get(currentNode) + nodeDist(currentNode, neighbor);
+                if (costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
+                    costSoFar.replace(neighbor, newCost);
+                    int priority = newCost + hueristic(neighbor, endID);
+                    pQueue.add(new QueueNode(neighbor, priority));
+                    cameFrom.put(neighbor, currentNode);
+                }
+            }
+        }
+
+        currentNode = endID;
+        while (!currentNode.equals(startID)) {
+            path.add(currentNode);
+            currentNode = cameFrom.get(currentNode);
+        }
+
+        return path;
+    }
+
+    //TODO - actually return a hueristic
+    private int hueristic(String nodeID, String endID){
+        //returns A* hueristic for node
+        return(0);
+    }
+
+    private ArrayList<String> findNeighboringNodes(String nodeID, String endID) throws Exception {
+        // ArrayList<Node> neighbors = new ArrayList<Node>();
+        ArrayList<String> neighbors = edges.getConnectedNodes(nodeID);
+        for (String neighbor : neighbors) {
+            if (neighbor.equals(endID)) {
+                continue;
+            }
+            Node node = nodes.getNodeByID(neighbor);
+            String type = node.getNodeType();
+            if (!type.equals("HALL") && !type.equals("ELEV") && !type.equals("STAI")) {
+                neighbors.remove(neighbor);
+            }
+        }
+
+        return neighbors;
+    }
+
+    //TODO account for changing floors
+    private int nodeDist(String currentNodeID, String nextNodeID) throws Exception{
+        //finds difference in x,y
+        Node currNode = nodes.getNodeByID(currentNodeID);
+        Node nextNode = nodes.getNodeByID(nextNodeID);
+
+        int xDif = abs(currNode.getXCoord() - nextNode.getXCoord());
+        int yDif = abs(currNode.getYCoord() - nextNode.getYCoord());
+
+        return(xDif + yDif); //returns distance
+    }
+
+    //TODO write function
+    private int floorNumAsInt(String floorNum){
+
+    }
+}
