@@ -28,7 +28,7 @@ public class Pathfinder {
 
             if(currentNode == endID){ break; }
 
-            ArrayList<Integer> neighbors = edges.getConnectedNodes(currentNode);
+            ArrayList<Integer> neighbors = edges.getAdjacentNodeIDs(currentNode);
             for (int neighbor : neighbors) {
                 //remove stair nodes if accessible is checked
                 if(accessible && currentNode.getNodeType().equals("STAI") && neighbor.getNodeType().equals("STAI")){
@@ -60,7 +60,7 @@ public class Pathfinder {
 
     private ArrayList<String> findNeighboringNodes(int nodeID, int endID) throws Exception {
         // ArrayList<Node> neighbors = new ArrayList<Node>();
-        ArrayList<String> neighbors = edges.getConnectedNodes(nodeID);
+        ArrayList<String> neighbors = edges.getAdjacentNodeIDs(nodeID);
         for (String neighbor : neighbors) {
             if (neighbor.equals(endID)) {
                 continue;
