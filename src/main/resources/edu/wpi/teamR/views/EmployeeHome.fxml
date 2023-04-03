@@ -9,10 +9,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamR.controllers.EmployeeHomeController">
    <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da8" height="100.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
-            <Text fill="WHITE" layoutX="462.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Home ">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da8" height="100.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Text fill="WHITE" layoutX="462.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Home " AnchorPane.bottomAnchor="645.6171875" AnchorPane.leftAnchor="461.90625" AnchorPane.rightAnchor="482.09375" AnchorPane.topAnchor="21.2265625">
                <font>
                   <Font name="Times New Roman" size="48.0" />
                </font>
@@ -27,7 +27,7 @@
                   <Font name="Times New Roman" size="20.0" />
                </font>
             </MFXButton>
-            <Text layoutX="175.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Select Your Desiered Action:">
+            <Text layoutX="175.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Select Your Desired Action:">
                <font>
                   <Font name="Times New Roman" size="24.0" />
                </font>

@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import org.controlsfx.control.PopOver;
@@ -26,6 +27,7 @@ public class HomeController {
   @FXML MenuItem directionsMenu;
   @FXML MenuItem mealMenu;
   @FXML MenuItem furnitureMenu;
+  @FXML MenuBar menuBar;
 
   private static Parent root;
 
@@ -61,6 +63,6 @@ public class HomeController {
     helpPopup.setContentNode(help);
     helpPopup.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
     helpPopup.setAutoHide(true);
-    helpPopup.show(borderPane);
+    helpPopup.show(menuBar);
   }
 }
