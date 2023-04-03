@@ -36,18 +36,26 @@ public class MapController {
 
   @FXML Text floorText;
 
-  ImageView groundFloorImage =
-      new ImageView(Main.class.getResource("images/00_thegroundfloor.png").toExternalForm());
-  ImageView firstFloorImage =
-      new ImageView(Main.class.getResource("images/01_thefirstfloor.png").toExternalForm());
-  ImageView secondFloorImage =
-      new ImageView(Main.class.getResource("images/02_thesecondfloor.png").toExternalForm());
-  ImageView thirdFloorImage =
-      new ImageView(Main.class.getResource("images/03_thethirdfloor.png").toExternalForm());
-  ImageView lowerOneImage =
-      new ImageView(Main.class.getResource("images/00_thelowerlevel1.png").toExternalForm());
-  ImageView lowerTwoImage =
-      new ImageView(Main.class.getResource("images/00_thelowerlevel2.png").toExternalForm());
+//  ImageView groundFloorImage =
+//      new ImageView(Main.class.getResource("images/00_thegroundfloor.png").toExternalForm());
+//  ImageView firstFloorImage =
+//      new ImageView(Main.class.getResource("images/01_thefirstfloor.png").toExternalForm());
+//  ImageView secondFloorImage =
+//      new ImageView(Main.class.getResource("images/02_thesecondfloor.png").toExternalForm());
+//  ImageView thirdFloorImage =
+//      new ImageView(Main.class.getResource("images/03_thethirdfloor.png").toExternalForm());
+//  ImageView lowerOneImage =
+//      new ImageView(Main.class.getResource("images/00_thelowerlevel1.png").toExternalForm());
+//  ImageView lowerTwoImage =
+//      new ImageView(Main.class.getResource("images/00_thelowerlevel2.png").toExternalForm());
+//  ImageView[] floorArray = {
+//          lowerTwoImage,
+//          lowerOneImage,
+//          groundFloorImage,
+//          firstFloorImage,
+//          secondFloorImage,
+//          thirdFloorImage
+//  };
 
   URL groundFloorLink = Main.class.getResource("images/00_thegroundfloor.png");
   URL firstFloorLink = Main.class.getResource("images/01_thefirstfloor.png");
@@ -58,14 +66,6 @@ public class MapController {
 
   ImageView imageView;
   int currentFloor = 2;
-  ImageView[] floorArray = {
-    lowerTwoImage,
-    lowerOneImage,
-    groundFloorImage,
-    firstFloorImage,
-    secondFloorImage,
-    thirdFloorImage
-  };
 
   URL[] linkArray = {
     LLTwoLink, LLOneLink, groundFloorLink, firstFloorLink, secondFloorLink, thirdFloorLink,
@@ -84,7 +84,6 @@ public class MapController {
   public void initialize() {
     imageView = new ImageView(linkArray[currentFloor].toExternalForm());
     gesturePane.setContent(imageView); // set to groundfloor
-    reset();
     gesturePane.setMinScale(0.25);
     gesturePane.setMaxScale(2);
     resetButton.setOnMouseClicked(event -> reset());
@@ -93,6 +92,7 @@ public class MapController {
     floorUpButton.setOnMouseClicked(event -> displayFloorUp());
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
     floorText.setText(floorNames[currentFloor]);
+    reset();
   }
 
   // Reset to original zoom
