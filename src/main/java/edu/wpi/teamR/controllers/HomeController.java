@@ -21,19 +21,26 @@ public class HomeController {
   @FXML MenuItem exitButton;
   @FXML MenuItem about;
   @FXML BorderPane borderPane;
-  @FXML MFXButton employeeButton;
+  @FXML MFXButton mapButton;
+  @FXML MenuItem mapMenu;
+  @FXML MenuItem directionsMenu;
+  @FXML MenuItem mealMenu;
+  @FXML MenuItem furnitureMenu;
 
   private static Parent root;
 
   @FXML
   public void initialize() {
-    navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MEAL_REQUEST));
-    navigateButton.setOnMouseEntered(event -> {});
     navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    directionsMenu.setOnAction(event -> Navigation.navigate(Screen.SIGNAGE));
     mealButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MEAL_REQUEST));
+    mealMenu.setOnAction(event -> Navigation.navigate(Screen.MEAL_REQUEST));
     exitButton.setOnAction(actionEvent -> Platform.exit());
     furnitureButton.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    furnitureMenu.setOnAction(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
     loginButton.setOnMouseClicked(event -> Navigation.navigate(Screen.LogIn));
+    mapButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mapMenu.setOnAction(event -> Navigation.navigate(Screen.PATHFINDING));
 
     about.setOnAction(
         event -> {
