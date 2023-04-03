@@ -15,7 +15,8 @@ public class Pathfinder {
         this.edges = edges;
     }
 
-    public Path aStarPath(int startID, int endID) throws Exception{
+    //if accessible is True, the algorithm will not suggest staircases
+    public Path aStarPath(int startID, int endID, boolean accessible) throws Exception{
         Path path = new Path();
         HashMap<Integer, Integer> cameFrom = new HashMap<>();
         HashMap<Integer, Integer> costSoFar = new HashMap<>();
@@ -29,6 +30,10 @@ public class Pathfinder {
 
             ArrayList<Integer> neighbors = edges.getConnectedNodes(currentNode);
             for (int neighbor : neighbors) {
+                //remove stair nodes if accessible is checked
+                if(accessible && currentNode.getNodeType().equals("STAI") && neighbor.getNodeType().equals("STAI")){
+                    continue;
+                }
                 int newCost = costSoFar.get(currentNode) + nodeDist(currentNode, neighbor);
                 if (costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
                     costSoFar.replace(neighbor, newCost);
