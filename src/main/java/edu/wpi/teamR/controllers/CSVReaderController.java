@@ -16,7 +16,7 @@ public class CSVReaderController {
 
   @FXML
   public void initialize() {
-    backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
     fileButton.setOnAction(event -> openFile());
   }
 
