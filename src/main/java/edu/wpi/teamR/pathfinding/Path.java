@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class Path {
     @Getter
-    private ArrayList<String> path;
+    private ArrayList<Integer> path;
 
     Path() {
-        path = new ArrayList<String>();
+        path = new ArrayList<Integer>();
     }
 
-    void add(String nodeID) {
+    void add(int nodeID) {
         path.add(0, nodeID);
     }
 }

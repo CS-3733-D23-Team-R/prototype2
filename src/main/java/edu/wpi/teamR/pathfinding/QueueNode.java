@@ -5,10 +5,10 @@ import lombok.Setter;
 
 @Getter @Setter
 public class QueueNode implements Comparable<QueueNode> {
-    private String nodeID;
+    private int nodeID;
     private int value;
 
-    QueueNode(String nodeID, int value) {
+    QueueNode(int nodeID, int value) {
         this.nodeID = nodeID;
         this.value = value;
     }

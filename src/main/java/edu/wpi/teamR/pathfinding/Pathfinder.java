@@ -15,20 +15,20 @@ public class Pathfinder {
         this.edges = edges;
     }
 
-    public Path aStarPath(String startID, String endID) throws Exception{
+    public Path aStarPath(int startID, int endID) throws Exception{
         Path path = new Path();
-        HashMap<String, String> cameFrom = new HashMap<>();
-        HashMap<String, Integer> costSoFar = new HashMap<>();
+        HashMap<Integer, Integer> cameFrom = new HashMap<>();
+        HashMap<Integer, Integer> costSoFar = new HashMap<>();
         PriorityQueue<QueueNode> pQueue = new PriorityQueue<>();
         pQueue.add(new QueueNode(startID, 0));
-        String currentNode;
+        int currentNode;
         while(!pQueue.isEmpty()){
             currentNode = pQueue.remove().getNodeID();
 
-            if(currentNode.equals(endID)){ break; }
+            if(currentNode == endID){ break; }
 
-            ArrayList<String> neighbors = edges.getConnectedNodes(currentNode);
-            for (String neighbor : neighbors) {
+            ArrayList<Integer> neighbors = edges.getConnectedNodes(currentNode);
+            for (int neighbor : neighbors) {
                 int newCost = costSoFar.get(currentNode) + nodeDist(currentNode, neighbor);
                 if (costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
                     costSoFar.replace(neighbor, newCost);
@@ -40,7 +40,7 @@ public class Pathfinder {
         }
 
         currentNode = endID;
-        while (!currentNode.equals(startID)) {
+        while (currentNode != startID) {
             path.add(currentNode);
             currentNode = cameFrom.get(currentNode);
         }
@@ -48,12 +48,12 @@ public class Pathfinder {
         return path;
     }
 
-    private int hueristic(String nodeID, String endID){
+    private int hueristic(int nodeID, int endID){
         //returns A* hueristic for node
         return nodeDist(nodeID, endID, 200);
     }
 
-    private ArrayList<String> findNeighboringNodes(String nodeID, String endID) throws Exception {
+    private ArrayList<String> findNeighboringNodes(int nodeID, int endID) throws Exception {
         // ArrayList<Node> neighbors = new ArrayList<Node>();
         ArrayList<String> neighbors = edges.getConnectedNodes(nodeID);
         for (String neighbor : neighbors) {
@@ -70,11 +70,11 @@ public class Pathfinder {
         return neighbors;
     }
 
-    private int nodeDist(String currentNodeID, String nextNodeID) {
+    private int nodeDist(int currentNodeID, int nextNodeID) {
         return nodeDist(currentNodeID, nextNodeID, 100);
     }
 
-    private int nodeDist(String currentNodeID, String nextNodeID, int zDifMultiplier) {
+    private int nodeDist(int currentNodeID, int nextNodeID, int zDifMultiplier) {
         //finds difference in x,y
         Node currNode = nodes.getNodeByID(currentNodeID);
         Node nextNode = nodes.getNodeByID(nextNodeID);
