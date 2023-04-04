@@ -71,6 +71,7 @@ public class MapController {
   };
 
   private AnchorPane mapPane = new AnchorPane();
+  private AnchorPane pathPane = new AnchorPane();
 
   private NodeDAO nodes;
   private EdgeDAO edges;
@@ -97,7 +98,7 @@ public class MapController {
       try {
         displayPath();
       } catch (Exception e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
       }
     });
     floorText.setText(floorNames[currentFloor]);
@@ -117,6 +118,12 @@ public class MapController {
     gesturePane.zoomTo(0.25, 0.25, new Point2D(2500, 1700));
     gesturePane.zoomTo(0.25, 0.25, new Point2D(2500, 1700));
     gesturePane.centreOn(new Point2D(2500, 1700));
+    clearPath();
+  }
+
+  public void clearPath() {
+    pathPane.getChildren().clear();
+    mapPane.getChildren().remove(pathPane);
   }
 
   // zoom into a desired location
@@ -174,28 +181,29 @@ public class MapController {
   }
 
   public void displayPath() throws Exception {
+    clearPath();
+    mapPane.getChildren().add(pathPane);
     Pathfinder pathfinder = new Pathfinder(nodes, edges, moves, locationNames);
-    pathfinder.aStarPath(110, 165, false);
+    Path mapPath = pathfinder.aStarPath(110, 165, false);
+    ArrayList<Integer> currentPath = mapPath.getPath();
 
-    Node n1 = nodes.selectNodeByID(115);
-    Node n2 = nodes.selectNodeByID(165);
+    Node startNode = nodes.selectNodeByID(110);
+    Node endNode = nodes.selectNodeByID(115);
 
-    Circle start = new Circle(n1.getxCoord(), n1.getyCoord(), 5, Color.RED);
-    Circle end = new Circle(n2.getxCoord(), n2.getyCoord(), 5, Color.RED);
-    mapPane.getChildren().add(start);
-    mapPane.getChildren().add(end);
-    /*
-    Node n1 = new Node(110, 2360, 849, "L1", "45 Francis");
-    Node n2 = new Node(115,2130,904,"L1", "45 Francis");
-    Node n3 = new Node(165,2770,1284,"L1","45 Francis");
-    Circle start = new Circle(n1.getxCoord(), n1.getyCoord(), 5, Color.RED);
-    Circle end = new Circle(n2.getxCoord(), n2.getyCoord(), 5, Color.RED);
-    mapPane.getChildren().add(start);
-    mapPane.getChildren().add(end);
-    Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n3.getxCoord(), n3.getyCoord());
-    Line l2 = new Line(n3.getxCoord(), n3.getyCoord(), n2.getxCoord(), n2.getyCoord());
-    mapPane.getChildren().add(l1);
-    mapPane.getChildren().add(l2);
-     */
+    Circle start = new Circle(startNode.getxCoord(), startNode.getyCoord(), 5, Color.RED);
+    Circle end = new Circle(endNode.getxCoord(), endNode.getyCoord(), 5, Color.RED);
+
+    pathPane.getChildren().add(start);
+    pathPane.getChildren().add(end);
+
+    for (Integer i: currentPath){
+      if (i == currentPath.size()) {
+        break;
+      }
+      Node n1 = nodes.selectNodeByID(i);
+      Node n2 = nodes.selectNodeByID(i+1);
+      Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
+      mapPane.getChildren().add(l1);
+    }
   }
 }
