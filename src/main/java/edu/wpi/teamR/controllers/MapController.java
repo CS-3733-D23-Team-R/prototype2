@@ -55,7 +55,7 @@ public class MapController {
   URL LLTwoLink = Main.class.getResource("images/00_thelowerlevel2.png");
 
   ImageView imageView;
-  int currentFloor = 2;
+  int currentFloor = 3;
 
   URL[] linkArray = {
     LLTwoLink, LLOneLink, groundFloorLink, firstFloorLink, secondFloorLink, thirdFloorLink,
@@ -76,7 +76,7 @@ public class MapController {
   private NodeDAO nodes;
   private EdgeDAO edges;
   private LocationNameDAO locationNames;
-  private MoveDAO moves;
+  private static MoveDAO moves;
 
   String username = "teamr";
   String password = "teamr150";
@@ -91,12 +91,12 @@ public class MapController {
     gesturePane.setMinScale(0.25);
     gesturePane.setMaxScale(2);
     resetButton.setOnMouseClicked(event -> reset());
-    searchButton.setOnMouseClicked(event -> search());
     floorDownButton.setOnMouseClicked(event -> displayFloorDown());
     floorUpButton.setOnMouseClicked(event -> displayFloorUp());
-    homeButton.setOnMouseClicked(event -> {
+    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    searchButton.setOnMouseClicked(event -> {
       try {
-        displayPath();
+        search();
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -138,7 +138,7 @@ public class MapController {
         .centreOn(new Point2D(x, y));
   }
 
-  public void search() {
+  public void search() throws Exception {
     /*TODO
     take info from fields
     calculate route
@@ -154,6 +154,7 @@ public class MapController {
     System.out.println("Y:" + gesturePane.getCurrentY());
     System.out.println("XScale:" + gesturePane.getCurrentScaleX());
     System.out.println("YScale:" + gesturePane.getCurrentScaleY());
+    displayPath(start, end, isAccessible);
   }
 
   public void displayFloorUp() {
@@ -180,15 +181,22 @@ public class MapController {
     }
   }
 
-  public void displayPath() throws Exception {
+  public void displayPath(String startLocation, String endLocation, Boolean accessible) throws Exception {
     clearPath();
     mapPane.getChildren().add(pathPane);
+
+    int startID = idFromName(startLocation);
+    int endID = idFromName(endLocation);
+
     Pathfinder pathfinder = new Pathfinder(nodes, edges, moves, locationNames);
-    Path mapPath = pathfinder.aStarPath(110, 165, false);
+    Path mapPath = pathfinder.aStarPath(startID, endID, accessible);
     ArrayList<Integer> currentPath = mapPath.getPath();
 
-    Node startNode = nodes.selectNodeByID(110);
-    Node endNode = nodes.selectNodeByID(165);
+    Node startNode = nodes.selectNodeByID(startID);
+    Node endNode = nodes.selectNodeByID(endID);
+
+    System.out.println(endNode.getxCoord());
+    System.out.println(startNode.getxCoord());
 
     Circle start = new Circle(startNode.getxCoord(), startNode.getyCoord(), 5, Color.RED);
     Circle end = new Circle(endNode.getxCoord(), endNode.getyCoord(), 5, Color.RED);
@@ -200,7 +208,25 @@ public class MapController {
       Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
       Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
       Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
-      mapPane.getChildren().add(l1);
+      pathPane.getChildren().add(l1);
     }
+  }
+
+  private static int idFromName(String longname) throws NotFoundException {
+    ArrayList<Move> matchingMoves = moves.selectMoves(null, longname, null);
+    int newestMove = -1;
+    long lowestDate = Long.MAX_VALUE;
+
+    for (int i = 0; i < matchingMoves.size(); i++){
+      long moveDate = matchingMoves.get(i).getMoveDate().getTime();
+      if (moveDate < lowestDate){
+        lowestDate = moveDate;
+        newestMove = i;
+      }
+    }
+    if (newestMove==-1)
+      throw new NotFoundException();
+
+    return matchingMoves.get(newestMove).getNodeID();
   }
 }
