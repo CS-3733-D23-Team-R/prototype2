@@ -150,10 +150,6 @@ public class MapController {
     String start = startField.getText();
     String end = endField.getText();
     Boolean isAccessible = accessibleCheckbox.isPressed();
-    System.out.println("X:" + gesturePane.getCurrentX());
-    System.out.println("Y:" + gesturePane.getCurrentY());
-    System.out.println("XScale:" + gesturePane.getCurrentScaleX());
-    System.out.println("YScale:" + gesturePane.getCurrentScaleY());
     displayPath(start, end, isAccessible);
   }
 
