@@ -2,17 +2,22 @@ package edu.wpi.teamR.pathfinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 import static java.lang.Math.abs;
 
+import edu.wpi.teamR.database.*;
+
 public class Pathfinder {
     private NodeDAO nodes;
     private EdgeDAO edges;
-    public Pathfinder(NodeDAO nodes, EdgeDAO edges) {
+    private LocationNameDAO locationNames;
+    private MoveDAO moves;
+    public Pathfinder(NodeDAO nodes, EdgeDAO edges, MoveDAO moves, LocationNameDAO locationNames) {
         this.nodes = nodes;
         this.edges = edges;
+        this.moves = moves;
+        this.locationNames = locationNames;
     }
 
     //if accessible is True, the algorithm will not suggest staircases
@@ -31,7 +36,7 @@ public class Pathfinder {
             ArrayList<Integer> neighbors = edges.getAdjacentNodeIDs(currentNode);
             for (int neighbor : neighbors) {
                 //remove stair nodes if accessible is checked
-                if(accessible && currentNode.getNodeType().equals("STAI") && neighbor.getNodeType().equals("STAI")){
+                if(accessible && findNodeType(currentNode).equals("STAI") && findNodeType(neighbor).equals("STAI")) {
                     continue;
                 }
                 int newCost = costSoFar.get(currentNode) + nodeDist(currentNode, neighbor);
@@ -53,20 +58,23 @@ public class Pathfinder {
         return path;
     }
 
-    private int hueristic(int nodeID, int endID){
+    private String findNodeType(int nodeID) {
+        return locationNames.selectLocationNames(moves.selectMoves(nodeID, null, null).get(0).getLongName() ,null, null).get(0).getNodeType();
+    }
+
+    private int hueristic(int nodeID, int endID) throws NotFoundException {
         //returns A* hueristic for node
         return nodeDist(nodeID, endID, 200);
     }
 
-    private ArrayList<String> findNeighboringNodes(int nodeID, int endID) throws Exception {
+    private ArrayList<Integer> findNeighboringNodes(int nodeID, int endID) throws NotFoundException {
         // ArrayList<Node> neighbors = new ArrayList<Node>();
-        ArrayList<String> neighbors = edges.getAdjacentNodeIDs(nodeID);
-        for (String neighbor : neighbors) {
+        ArrayList<Integer> neighbors = edges.getAdjacentNodeIDs(nodeID);
+        for (Integer neighbor : neighbors) {
             if (neighbor.equals(endID)) {
                 continue;
             }
-            Node node = nodes.getNodeByID(neighbor);
-            String type = node.getNodeType();
+            String type = findNodeType(neighbor);
             if (!type.equals("HALL") && !type.equals("ELEV") && !type.equals("STAI")) {
                 neighbors.remove(neighbor);
             }
@@ -75,20 +83,20 @@ public class Pathfinder {
         return neighbors;
     }
 
-    private int nodeDist(int currentNodeID, int nextNodeID) {
+    private int nodeDist(int currentNodeID, int nextNodeID) throws NotFoundException {
         return nodeDist(currentNodeID, nextNodeID, 100);
     }
 
-    private int nodeDist(int currentNodeID, int nextNodeID, int zDifMultiplier) {
+    private int nodeDist(int currentNodeID, int nextNodeID, int zDifMultiplier) throws NotFoundException {
         //finds difference in x,y
-        Node currNode = nodes.getNodeByID(currentNodeID);
-        Node nextNode = nodes.getNodeByID(nextNodeID);
+        Node currNode = nodes.selectNodeByID(currentNodeID);
+        Node nextNode = nodes.selectNodeByID(nextNodeID);
 
-        int xDif = abs(currNode.getXCoord() - nextNode.getXCoord());
-        int yDif = abs(currNode.getYCoord() - nextNode.getYCoord());
-        int zDif = abs(floorNumAsInt(currNode.floorNum() - floorNumAsInt(nextNodeID.floorNum()));
+        int xDif = abs(currNode.getxCoord() - nextNode.getxCoord());
+        int yDif = abs(currNode.getyCoord() - nextNode.getyCoord());
+        int zDif = abs(floorNumAsInt(currNode.getFloorNum()) - floorNumAsInt(nextNode.getFloorNum()));
 
-        if (currNode.getNodeType().equals("STAI") && nextNode.getNodeType.equals("STAI")) {
+        if (findNodeType(currentNodeID).equals("STAI") && findNodeType(nextNodeID).equals("STAI")) {
             zDif = zDif * zDifMultiplier * 2;
         } else {
             zDif = zDif * zDifMultiplier;
