@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class MoveDAO {
@@ -149,7 +150,12 @@ public class MoveDAO {
       String line = "\n";
       line += aMove.getNodeID() + ",";
       line += aMove.getLongName() + ",";
-      line += aMove.getMoveDate();
+      java.util.Calendar cal = java.util.Calendar.getInstance();
+      cal.setTime(aMove.getMoveDate());
+      int year = cal.get(Calendar.YEAR);
+      int month = cal.get(Calendar.MONTH)+1;
+      int day = cal.get(Calendar.DAY_OF_MONTH);
+      line += month+"/"+day+"/"+year;
       outputFileWriter.write(line);
     }
     outputFileWriter.flush();
@@ -173,7 +179,7 @@ public class MoveDAO {
       int month = Integer.parseInt(dateString[0]);
       int day = Integer.parseInt(dateString[1]);
       int year = Integer.parseInt(dateString[2]);
-      Date moveDate = new Date(year, month, day);
+      Date moveDate = Date.valueOf(year+"-"+month+"-"+day);
 
       sqlInsert = connection.prepareStatement("INSERT INTO "+schemaName+"."+tableName+"(nodeid, longname, movedate) VALUES(?,?,?);");
       sqlInsert.setInt(1, nodeID);
