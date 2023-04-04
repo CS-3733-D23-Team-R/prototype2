@@ -28,6 +28,7 @@ public class Pathfinder {
         PriorityQueue<QueueNode> pQueue = new PriorityQueue<>();
         pQueue.add(new QueueNode(startID, 0));
         int currentNode;
+        costSoFar.put(startID, 0);
         while(!pQueue.isEmpty()){
             currentNode = pQueue.remove().getNodeID();
 
@@ -54,6 +55,7 @@ public class Pathfinder {
             path.add(currentNode);
             currentNode = cameFrom.get(currentNode);
         }
+        path.add(startID);
 
         return path;
     }
@@ -109,9 +111,14 @@ public class Pathfinder {
     private int floorNumAsInt(String floorNum){
         int output;
         switch(floorNum){
-            case "L1": output = 1;
-            case "L2": output = 0;
-            default: output = Integer.parseInt(floorNum) + 1;
+            case "L1":
+                output = 1;
+                break;
+            case "L2":
+                output = 0;
+                break;
+            default:
+                output = Integer.parseInt(floorNum) + 1;
         }
         return output;
     }
