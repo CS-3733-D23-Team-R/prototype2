@@ -51,6 +51,12 @@
                         <MenuItem fx:id="furnitureMenu" mnemonicParsing="false" text="Furniture Request" />
                   </items>
                 </Menu>
+                  <Menu fx:id="directionsMenu" mnemonicParsing="false" text="Directions">
+                     <items>
+                        <MenuItem fx:id="signageMenu" mnemonicParsing="false" text="Directions" />
+                        <MenuItem fx:id="mapMenu" mnemonicParsing="false" text="Map/Pathfinding" />
+                     </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem fx:id="about" mnemonicParsing="false" text="About" />
@@ -127,6 +133,20 @@
                                     </ImageView>
                                  </children>
                               </HBox>
+                        <HBox prefHeight="20.0" prefWidth="250.0">
+                           <children>
+                              <MFXButton fx:id="mapButton" style="-fx-background-color: transparent;" text="Hospital Map" translateX="12.0" underline="true" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Times New Roman" size="24.0" />
+                                 </font>
+                              </MFXButton>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateX="12.0" translateY="10.0" HBox.hgrow="ALWAYS">
+                                 <image>
+                                    <Image url="@../images/TriangleArrow-Right.svg.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                            </children>
                         </VBox>
                      </children>

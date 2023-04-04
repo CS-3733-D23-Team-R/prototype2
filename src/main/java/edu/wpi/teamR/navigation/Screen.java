@@ -11,7 +11,7 @@ public enum Screen {
   READCSV("views/CSVReader.fxml"),
   LogIn("views/LogIn.fxml"),
   SortOrders("views/SortOrders.fxml"),
-  SORT("views/sortOrders.fxml"),
+  NODES("views/UpdateNodes.fxml"),
   EMPLOYEE("views/EmployeeHome.fxml");
 
   private final String filename;

@@ -21,13 +21,13 @@ public class SortOrdersController {
   @FXML TableColumn notesColumn;
   @FXML TableColumn mealColumn;
   @FXML ChoiceBox sortListByBox;
-  @FXML MFXButton homeButton;
+  @FXML MFXButton backButton;
 
   ObservableList<String> orderList = FXCollections.observableArrayList("Name", "Location", "Meal");
 
   @FXML
   public void initialize() {
-    homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
     sortListByBox.setValue("Default");
     sortListByBox.setItems(orderList);
     nameColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Name"));
