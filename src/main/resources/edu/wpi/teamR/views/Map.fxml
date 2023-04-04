@@ -20,7 +20,7 @@
             <MFXButton fx:id="floorDownButton" buttonType="RAISED" layoutX="20.0" layoutY="631.0" text="Floor Down" />
             <MFXTextField fx:id="startField" layoutX="75.0" layoutY="84.0" />
             <MFXTextField fx:id="endField" layoutX="76.0" layoutY="202.0" />
-            <MFXCheckbox fx:id="checkbox" layoutX="108.0" layoutY="349.0" />
+            <MFXCheckbox fx:id="accessibleCheckbox" layoutX="108.0" layoutY="349.0" />
             <MFXButton fx:id="searchButton" buttonType="RAISED" layoutX="97.0" layoutY="407.0" text="Search" />
             <Text layoutX="49.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Location">
                <font>
