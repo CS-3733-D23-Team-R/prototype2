@@ -158,7 +158,7 @@ public class EdgeDAO {
     }
     sqlFullCommand = "DELETE FROM "+schemaName+"."+tableName+";" + sqlFullCommand;
     statement.executeUpdate(sqlFullCommand);
-    this.edges = edges;
+    this.edges = newEdges;
     sc.close();
     closeConnection(connection);
   }
