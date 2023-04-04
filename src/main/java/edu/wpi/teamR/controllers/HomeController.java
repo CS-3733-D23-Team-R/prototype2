@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import org.controlsfx.control.PopOver;
@@ -17,20 +18,31 @@ public class HomeController {
   @FXML MFXButton navigateButton;
   @FXML MFXButton mealButton;
   @FXML MFXButton furnitureButton;
+  @FXML MFXButton loginButton;
   @FXML MenuItem exitButton;
   @FXML MenuItem about;
   @FXML BorderPane borderPane;
+  @FXML MFXButton mapButton;
+  @FXML MenuItem mapMenu;
+  @FXML MenuItem directionsMenu;
+  @FXML MenuItem mealMenu;
+  @FXML MenuItem furnitureMenu;
+  @FXML MenuBar menuBar;
 
   private static Parent root;
 
   @FXML
   public void initialize() {
-    navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MEAL_REQUEST));
-    navigateButton.setOnMouseEntered(event -> {});
     navigateButton.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    directionsMenu.setOnAction(event -> Navigation.navigate(Screen.SIGNAGE));
     mealButton.setOnMouseClicked(event -> Navigation.navigate(Screen.MEAL_REQUEST));
+    mealMenu.setOnAction(event -> Navigation.navigate(Screen.MEAL_REQUEST));
     exitButton.setOnAction(actionEvent -> Platform.exit());
     furnitureButton.setOnMouseClicked(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    furnitureMenu.setOnAction(event -> Navigation.navigate(Screen.FURNITURE_REQUEST));
+    loginButton.setOnMouseClicked(event -> Navigation.navigate(Screen.LogIn));
+    mapButton.setOnMouseClicked(event -> Navigation.navigate(Screen.PATHFINDING));
+    mapMenu.setOnAction(event -> Navigation.navigate(Screen.PATHFINDING));
 
     about.setOnAction(
         event -> {
@@ -51,6 +63,6 @@ public class HomeController {
     helpPopup.setContentNode(help);
     helpPopup.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
     helpPopup.setAutoHide(true);
-    helpPopup.show(borderPane);
+    helpPopup.show(menuBar);
   }
 }
