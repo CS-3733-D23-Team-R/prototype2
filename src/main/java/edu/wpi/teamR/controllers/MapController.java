@@ -188,7 +188,7 @@ public class MapController {
     ArrayList<Integer> currentPath = mapPath.getPath();
 
     Node startNode = nodes.selectNodeByID(110);
-    Node endNode = nodes.selectNodeByID(115);
+    Node endNode = nodes.selectNodeByID(165);
 
     Circle start = new Circle(startNode.getxCoord(), startNode.getyCoord(), 5, Color.RED);
     Circle end = new Circle(endNode.getxCoord(), endNode.getyCoord(), 5, Color.RED);
@@ -196,12 +196,9 @@ public class MapController {
     pathPane.getChildren().add(start);
     pathPane.getChildren().add(end);
 
-    for (Integer i: currentPath){
-      if (i == currentPath.size()) {
-        break;
-      }
-      Node n1 = nodes.selectNodeByID(i);
-      Node n2 = nodes.selectNodeByID(i+1);
+    for (int i = 0; i < mapPath.getPath().size() - 1; i++) {
+      Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
+      Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
       Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
       mapPane.getChildren().add(l1);
     }
