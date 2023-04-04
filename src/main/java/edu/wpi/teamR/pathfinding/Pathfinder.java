@@ -40,8 +40,8 @@ public class Pathfinder {
                     continue;
                 }
                 int newCost = costSoFar.get(currentNode) + nodeDist(currentNode, neighbor);
-                if (costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
-                    costSoFar.replace(neighbor, newCost);
+                if (!costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
+                    costSoFar.put(neighbor, newCost);
                     int priority = newCost + hueristic(neighbor, endID);
                     pQueue.add(new QueueNode(neighbor, priority));
                     cameFrom.put(neighbor, currentNode);
