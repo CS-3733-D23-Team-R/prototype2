@@ -114,6 +114,13 @@ public class EdgeDAO {
     }
     closeConnection(connection);
   }
+  public void deleteAllEdges() throws SQLException, ClassNotFoundException {
+    Connection connection = createConnection();
+    Statement statement = connection.createStatement();
+    statement.executeUpdate("DELETE FROM "+schemaName+"."+tableName+";");
+    this.edges = new ArrayList<Edge>();
+    closeConnection(connection);
+  }
   public void writeCSV(String outputFile) throws IOException {
     File csvFile = new File(outputFile);
     FileWriter outputFileWriter = new FileWriter(csvFile);
