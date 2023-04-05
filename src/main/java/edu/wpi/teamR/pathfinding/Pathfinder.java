@@ -94,8 +94,8 @@ public class Pathfinder {
         Node currNode = nodes.selectNodeByID(currentNodeID);
         Node nextNode = nodes.selectNodeByID(nextNodeID);
 
-        int xDif = abs(currNode.getxCoord() - nextNode.getxCoord());
-        int yDif = abs(currNode.getyCoord() - nextNode.getyCoord());
+        int xDif = abs(currNode.getXCoord() - nextNode.getXCoord());
+        int yDif = abs(currNode.getYCoord() - nextNode.getYCoord());
         int zDif = abs(floorNumAsInt(currNode.getFloorNum()) - floorNumAsInt(nextNode.getFloorNum()));
 
         if (findNodeType(currentNodeID).equals("STAI") && findNodeType(nextNodeID).equals("STAI")) {
