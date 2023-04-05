@@ -1,107 +1,56 @@
-
 package edu.wpi.teamR.controllers;
 
-import edu.wpi.teamR.database.*;
+import edu.wpi.teamR.fields.MealFields;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.IntegerStringConverter;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 
 public class SortOrdersController {
 
-  @FXML TableView<ServiceRequest> requestTable;
-  @FXML TableColumn<ServiceRequest, Integer> idColumn;
-  @FXML TableColumn<ServiceRequest, String> nameColumn;
-  @FXML TableColumn<ServiceRequest, String> locationColumn;
-  @FXML TableColumn<ServiceRequest, String> requestTypeColumn;
-  @FXML TableColumn<ServiceRequest, String> notesColumn;
-  @FXML TableColumn<ServiceRequest, String> staffMemberColumn;
-  @FXML TableColumn<ServiceRequest, String> timeColumn;
-  @FXML TableColumn<ServiceRequest, String> statusColumn;
+  @FXML TableView requestTable;
+  @FXML TableColumn nameColumn;
+  @FXML TableColumn locationColumn;
+  @FXML TableColumn requestTypeColumn;
+  @FXML TableColumn notesColumn;
+  @FXML TableColumn staffMemberColumn;
+  @FXML TableColumn timeColumn;
+  @FXML TableColumn statusColumn;
   @FXML MFXButton backButton;
-  FoodRequestDAO dao;
-  ObservableList<RequestStatus> statusList = FXCollections.observableArrayList(RequestStatus.values());
 
+  // for un-used choice box
+  // ObservableList<String> orderList = FXCollections.observableArrayList("Name", "Location", "Request Type", "Notes", "Staff Member", "Time", "Status");
 
   @FXML
   public void initialize() {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
+    nameColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Name"));
+    locationColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Location"));
+    requestTypeColumn.setCellValueFactory(
+        new PropertyValueFactory<MealFields, String>("requestType"));
+    notesColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Notes"));
+    staffMemberColumn.setCellValueFactory(
+        new PropertyValueFactory<MealFields, String>("staffMember"));
+    timeColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Time"));
+    statusColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Status"));
 
-    idColumn.setCellValueFactory(new PropertyValueFactory<>("requestID"));
-    nameColumn.setCellValueFactory(new PropertyValueFactory<>("requesterName"));
-    locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-    staffMemberColumn.setCellValueFactory(new PropertyValueFactory<>("staffMember"));
-    staffMemberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-    notesColumn.setCellValueFactory(new PropertyValueFactory<>("additionalNotes"));
-    timeColumn.setCellValueFactory(new PropertyValueFactory<>("requestDate"));
-    //statusColumn.setCellValueFactory(new PropertyValueFactory<>("requestStatus"));
-    requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("itemType"));
-    requestTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+    requestTable.setItems(getRequests());
+  }
 
+  public ObservableList<MealFields> getRequests() {
+    ObservableList<MealFields> meals = FXCollections.observableArrayList();
 
-    for (ServiceRequest foodRequest : FoodRequestDAO.getInstance().getFoodRequests()) {
-      requestTable.getItems().add(foodRequest);
-    }
+    // test list
+    meals.add(new MealFields("me", "here", "staff", "hi", "chicken"));
+    meals.add(new MealFields("you", "there", "staff2", "bye", "beef"));
+    meals.add(new MealFields("a", "a", "a", "a", "a"));
+    meals.add(new MealFields("z", "z", "z", "z", "z"));
 
-    for (ServiceRequest furnRequest : FurnitureRequestDAO.getInstance().getFurnitureRequests()) {
-      requestTable.getItems().add(furnRequest);
-    }
-
-
-    staffMemberColumn.setOnEditCommit(event -> {
-      ServiceRequest request = event.getRowValue();
-      request.setStaffMember(event.getNewValue());
-      try {
-        FoodRequestDAO.getInstance().modifyFoodRequestByID(request.getRequestID(), request.getRequesterName(),request.getLocation(),request.getItemType(), event.getNewValue(), request.getAdditionalNotes(), request.getRequestDate(), request.getRequestStatus());
-      } catch (SQLException | ClassNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-
-    });
-
-    //dao = FoodRequestDAO.createInstance(""
-
-    statusColumn.setCellFactory(column -> new TableCell<>() {
-      private final MFXComboBox<RequestStatus> changeStatusButton = new MFXComboBox<RequestStatus>(statusList);
-      {
-        //changeStatusButton.setValue();
-        changeStatusButton.setOnAction(event -> {
-          FoodRequest request = (FoodRequest) getTableView().getItems().get(getIndex());
-          try {
-            RequestStatus status = changeStatusButton.getSelectionModel().getSelectedItem();
-            request.setRequestStatus(status);
-            FoodRequestDAO.getInstance().modifyFoodRequestByID(request.getRequestID(), request.getRequesterName(), request.getLocation(), request.getMealType(), request.getStaffMember(), request.getAdditionalNotes(), request.getRequestDate(), status);
-          } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-          }
-        });
-      }
-      @Override
-      protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-
-        if (empty) {
-          setGraphic(null);
-        } else {
-          ServiceRequest sr = getTableView().getItems().get(getIndex());
-          changeStatusButton.getSelectionModel().selectItem(sr.getRequestStatus());
-          setGraphic(changeStatusButton);
-        }
-      }
-    });
-
+    return meals;
   }
 }
