@@ -21,12 +21,13 @@
             </Text>
             <TableView fx:id="requestTable" layoutX="94.0" layoutY="179.0" prefHeight="403.0" prefWidth="1092.0">
               <columns>
-                <TableColumn fx:id="nameColumn" prefWidth="133.3332977294922" text="Name" />
-                <TableColumn fx:id="locationColumn" prefWidth="118.66668701171875" text="Location" />
-                 <TableColumn fx:id="requestTypeColumn" prefWidth="149.33340454101562" text="Request Type" />
-                 <TableColumn fx:id="notesColumn" prefWidth="171.99993896484375" text="Notes" />
-                 <TableColumn fx:id="staffMemberColumn" minWidth="10." prefWidth="172.00006103515625" text="Staff Member" />
-                 <TableColumn fx:id="timeColumn" prefWidth="222.66656494140625" text="Time" />
+                  <TableColumn fx:id="idColumn" prefWidth="103.33338165283203" text="ID Number" />
+                <TableColumn fx:id="nameColumn" prefWidth="115.33326721191406" text="Name" />
+                <TableColumn fx:id="locationColumn" prefWidth="124.0" text="Location" />
+                 <TableColumn fx:id="requestTypeColumn" prefWidth="114.66671752929688" text="Request Type" />
+                 <TableColumn fx:id="notesColumn" prefWidth="148.66668701171875" text="Notes" />
+                 <TableColumn fx:id="staffMemberColumn" minWidth="10." prefWidth="163.33331298828125" text="Staff Member" />
+                 <TableColumn fx:id="timeColumn" prefWidth="200.66656494140625" text="Time" />
                  <TableColumn fx:id="statusColumn" prefWidth="121.3333740234375" text="Status" />
               </columns>
             </TableView>
