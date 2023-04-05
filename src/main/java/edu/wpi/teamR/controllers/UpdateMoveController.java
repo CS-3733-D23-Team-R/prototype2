@@ -2,6 +2,8 @@ package edu.wpi.teamR.controllers;
 
 import edu.wpi.teamR.database.Move;
 import edu.wpi.teamR.database.MoveDAO;
+import edu.wpi.teamR.database.Node;
+import edu.wpi.teamR.database.NotFoundException;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -39,6 +41,27 @@ public class UpdateMoveController{
     public void initialize() throws SQLException, ClassNotFoundException {
         backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
         setTableColumns();
+
+
+        nameColumn.setOnEditCommit(event -> {
+            Move move = event.getRowValue();
+            move.setLongName(event.getNewValue());
+            try {
+                dao.modifyMoveByID(move.getNodeID(), event.getNewValue(), move.getMoveDate());
+            } catch (SQLException | ClassNotFoundException | NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        dateColumn.setOnEditCommit(event -> {
+            Move move = event.getRowValue();
+            java.sql.Date sqlDate = new java.sql.Date(event.getNewValue().getTime());
+            move.setMoveDate(sqlDate);
+            try {
+                dao.modifyMoveByID(move.getNodeID(), move.getLongName(), sqlDate);
+            } catch (SQLException | ClassNotFoundException | NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void setTableColumns() throws SQLException, ClassNotFoundException {
@@ -61,8 +84,9 @@ public class UpdateMoveController{
             {
                 deleteButton.setOnAction(event -> {
                     Move move = getTableView().getItems().get(getIndex());
+                    java.sql.Date sqlDate = new java.sql.Date(move.getMoveDate().getTime());
                     try {
-                        dao.deleteMove(move.getNodeID(), move.getLongName(), move.getMoveDate());
+                        dao.deleteMove(move.getNodeID(), move.getLongName(), sqlDate);
                     } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
