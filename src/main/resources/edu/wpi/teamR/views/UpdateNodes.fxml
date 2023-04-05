@@ -25,13 +25,14 @@
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="nodesTable" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
+            <TableView fx:id="nodesTable" editable="true" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
               <columns>
-                <TableColumn fx:id="nodeIDColumn" prefWidth="207.66665649414062" text="nodeID" />
-                <TableColumn prefWidth="252.83334350585938" text="X-Coordinate" fx:id="xCoordinateColumn" />
-                  <TableColumn fx:id="yCoordinateColumn" minWidth="0.0" prefWidth="272.3333435058594" text="Y-Coordinate" />
+                <TableColumn fx:id="nodeIDColumn" prefWidth="200.0" text="nodeID" />
+                <TableColumn prefWidth="200.0" text="X-Coordinate" fx:id="xCoordinateColumn" />
+                  <TableColumn fx:id="yCoordinateColumn" minWidth="0.0" prefWidth="200.0" text="Y-Coordinate" />
                   <TableColumn fx:id="floorColumn" prefWidth="231.5" text="Floor" />
                   <TableColumn fx:id="buildingColumn" prefWidth="216.8333740234375" text="Building" />
+                  <TableColumn fx:id="deleteColumn" prefWidth="100.0" text="Delete?" />
               </columns>
             </TableView>
          </children>

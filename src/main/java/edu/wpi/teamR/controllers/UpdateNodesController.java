@@ -8,9 +8,12 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,16 +23,42 @@ public class UpdateNodesController {
   NodeDAO dao;
   @FXML MFXButton backButton;
   @FXML TableView<Node> nodesTable;
-  @FXML TableColumn nodeIDColumn;
-  @FXML TableColumn xCoordinateColumn;
-  @FXML TableColumn yCoordinateColumn;
-  @FXML TableColumn floorColumn;
-  @FXML TableColumn buildingColumn;
+  @FXML TableColumn<Node, Integer> nodeIDColumn;
+  @FXML TableColumn<Node, Integer> xCoordinateColumn;
+  @FXML TableColumn<Node, Integer> yCoordinateColumn;
+  @FXML TableColumn<Node, String> floorColumn;
+  @FXML TableColumn<Node, String> buildingColumn;
+  @FXML TableColumn<Node, Void> deleteColumn;
 
   @FXML
   public void initialize() throws SQLException, ClassNotFoundException {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
     setTableColumns();
+
+    xCoordinateColumn.setOnEditCommit(event -> {
+      Node node = event.getRowValue();
+      node.setxCoord(event.getNewValue());
+      int nodeID = getID(node);
+      try {
+        dao.modifyNodeByID(nodeID, event.getNewValue(), null, null, null);
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    yCoordinateColumn.setOnEditCommit(event -> {
+      Node node = event.getRowValue();
+      node.setyCoord(event.getNewValue());
+    });
+    floorColumn.setOnEditCommit(event -> {
+      Node node = event.getRowValue();
+      node.setFloorNum(event.getNewValue());
+    });
+    buildingColumn.setOnEditCommit(event -> {
+      Node node = event.getRowValue();
+      node.setBuilding(event.getNewValue());
+    });
   }
 
   public void setTableColumns() throws SQLException, ClassNotFoundException {
@@ -40,10 +69,47 @@ public class UpdateNodesController {
     ObservableList<Node> tableData = FXCollections.observableArrayList(nodeList);
     nodesTable.setItems(tableData);
 
-    nodeIDColumn.setCellValueFactory(new PropertyValueFactory<Node, Integer>("nodeID"));
-    xCoordinateColumn.setCellValueFactory(new PropertyValueFactory<Node, Integer>("xCoord"));
-    yCoordinateColumn.setCellValueFactory(new PropertyValueFactory<Node, Integer>("yCoord"));
-    floorColumn.setCellValueFactory(new PropertyValueFactory<Node, String>("floorNum"));
-    buildingColumn.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
+    nodeIDColumn.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
+    nodeIDColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+    xCoordinateColumn.setCellValueFactory(new PropertyValueFactory<>("xCoord"));
+    xCoordinateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+    yCoordinateColumn.setCellValueFactory(new PropertyValueFactory<>("yCoord"));
+    yCoordinateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+    floorColumn.setCellValueFactory(new PropertyValueFactory<>("floorNum"));
+    floorColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+    buildingColumn.setCellValueFactory(new PropertyValueFactory<>("building"));
+    buildingColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+    deleteColumn.setCellFactory(column -> new TableCell<>() {
+      private final MFXButton deleteButton = new MFXButton("Delete");
+      {
+        deleteButton.setOnAction(event -> {
+          Node node = getTableView().getItems().get(getIndex());
+          try {
+            dao.deleteNodes(node.getNodeID(), node.getXCoord(), node.getYCoord(), node.getFloorNum(), node.getBuilding());
+          } catch (SQLException e) {
+            throw new RuntimeException(e);
+          } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+          }
+          getTableView().getItems().remove(node);
+        });
+      }
+
+      @Override
+      protected void updateItem(Void item, boolean empty) {
+        super.updateItem(item, empty);
+
+        if (empty) {
+          setGraphic(null);
+        } else {
+          setGraphic(deleteButton);
+        }
+      }
+    });
+  }
+
+  public static int getID(Node n) {
+    return n.getNodeID();
   }
 }
