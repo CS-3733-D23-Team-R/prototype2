@@ -25,14 +25,12 @@
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <TableView layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
+            <TableView fx:id="nodesTable" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
               <columns>
-                <TableColumn prefWidth="160.0" text="nodeID" />
-                <TableColumn prefWidth="328.8888397216797" text="Location Name" />
-                  <TableColumn minWidth="0.0" prefWidth="211.7777099609375" text="Start Node" />
-                  <TableColumn prefWidth="259.55560302734375" text="End Node" />
-                  <TableColumn prefWidth="215.11114501953125" text="nodeID" />
-                  <TableColumn prefWidth="104.8887939453125" text="Date" />
+                <TableColumn fx:id="nodeIDColumn" prefWidth="273.6666564941406" text="nodeID" />
+                <TableColumn fx:id="locationNameColumn" prefWidth="312.3333435058594" text="Location Name" />
+                  <TableColumn fx:id="startNodeColumn" minWidth="0.0" prefWidth="304.16668701171875" text="Start Node" />
+                  <TableColumn fx:id="endNodeColumn" prefWidth="290.83331298828125" text="End Node" />
               </columns>
             </TableView>
          </children>
