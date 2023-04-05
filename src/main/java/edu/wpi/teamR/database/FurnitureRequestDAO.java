@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class FurnitureRequestDAO {
   private static FurnitureRequestDAO instance;
-  private ArrayList<FurnitureRequest> furnitureRequests;
+  private ArrayList<ServiceRequest> furnitureRequests;
   private String username, password, tableName, schemaName, connectionURL;
 
   private FurnitureRequestDAO(
@@ -17,7 +17,7 @@ public class FurnitureRequestDAO {
     this.schemaName = schemaName;
     this.connectionURL = connectionURL;
 
-    furnitureRequests = new ArrayList<FurnitureRequest>();
+    furnitureRequests = new ArrayList<ServiceRequest>();
     Connection connection = createConnection();
     Statement statement = connection.createStatement();
     ResultSet resultSet = statement.executeQuery("SELECT * FROM "+schemaName+"."+tableName+";");
@@ -49,7 +49,7 @@ public class FurnitureRequestDAO {
     return FurnitureRequestDAO.instance;
   }
 
-  public ArrayList<FurnitureRequest> getFurnitureRequests() {
+  public ArrayList<ServiceRequest> getFurnitureRequests() {
     return furnitureRequests;
   }
 
@@ -226,7 +226,7 @@ public class FurnitureRequestDAO {
       Boolean locationCheck =
           location == null || location.equals(furnitureRequests.get(i).getLocation());
       Boolean furnitureTypeCheck =
-          furnitureType == null || furnitureType.equals(furnitureRequests.get(i).getFurnitureType());
+          furnitureType == null || furnitureType.equals(furnitureRequests.get(i).getItemType());
       Boolean staffMemberCheck =
           staffMember == null || staffMember.equals(furnitureRequests.get(i).getStaffMember());
       Boolean additionalNotesCheck =
@@ -280,19 +280,19 @@ public class FurnitureRequestDAO {
             + requestID;
     statement.executeUpdate(sqlUpdate);
     closeConnection(connection);
-    FurnitureRequest aReq =
+    ServiceRequest aReq =
         selectFurnitureRequests(requestID, null, null, null, null, null, null, null).get(0);
     aReq.setRequestID(requestID);
     aReq.setRequesterName(requesterName);
     aReq.setLocation(location);
-    aReq.setFurnitureType(furnitureType);
+    aReq.setItemType(furnitureType);
     aReq.setStaffMember(staffMember);
     aReq.setAdditionalNotes(additionalNotes);
     aReq.setRequestDate(requestDate);
     aReq.setRequestStatus(requestStatus);
   }
 
-  public ArrayList<FurnitureRequest> selectFurnitureRequests(
+  public ArrayList<ServiceRequest> selectFurnitureRequests(
       Integer requestID,
       String requesterName,
       String location,
@@ -301,14 +301,14 @@ public class FurnitureRequestDAO {
       String additionalNotes,
       Timestamp requestDate,
       RequestStatus requestStatus) {
-    ArrayList<FurnitureRequest> aList = new ArrayList<FurnitureRequest>();
-    for (FurnitureRequest furnitureRequest : furnitureRequests) {
+    ArrayList<ServiceRequest> aList = new ArrayList<ServiceRequest>();
+    for (ServiceRequest furnitureRequest : furnitureRequests) {
       Boolean requesterNameCheck =
               requesterName == null || requesterName.equals(furnitureRequest.getRequesterName());
       Boolean locationCheck =
               location == null || location.equals(furnitureRequest.getLocation());
       Boolean furnitureTypeCheck =
-              furnitureType == null || furnitureType.equals(furnitureRequest.getFurnitureType());
+              furnitureType == null || furnitureType.equals(furnitureRequest.getItemType());
       Boolean staffMemberCheck =
               staffMember == null || staffMember.equals(furnitureRequest.getStaffMember());
       Boolean additionalNotesCheck =

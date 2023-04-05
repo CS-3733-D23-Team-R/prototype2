@@ -81,11 +81,11 @@ class FoodRequestDAOTest {
                 one.getAdditionalNotes(),
                 testLocalDateTime,
                 RequestStatus.Unstarted);
-        FoodRequest two = aFoodRequestDAO.selectFoodRequests(one.getRequestID(), null, null, null, null, null, null, null).get(0);
+        ServiceRequest two = aFoodRequestDAO.selectFoodRequests(one.getRequestID(), null, null, null, null, null, null, null).get(0);
         assertEquals(one.getRequestID(), two.getRequestID());
         assertEquals(one.getRequesterName(), two.getRequesterName());
         assertEquals(one.getLocation(), two.getLocation());
-        assertEquals(one.getMealType(), two.getMealType());
+        assertEquals(one.getMealType(), two.getItemType());
         assertEquals(one.getStaffMember(), two.getStaffMember());
         assertEquals(one.getAdditionalNotes(), two.getAdditionalNotes());
         assertEquals(one.getRequestDate().toString(), two.getRequestDate().toString());
@@ -121,7 +121,7 @@ class FoodRequestDAOTest {
                 "Pineapple juice is great",
                 testLocalDateTime,
                 RequestStatus.Complete);
-        ArrayList<FoodRequest> filteredFoodRequests = aFoodRequestDAO.selectFoodRequests(
+        ArrayList<ServiceRequest> filteredFoodRequests = aFoodRequestDAO.selectFoodRequests(
                 null,
                 "Charlie",
                 null,
@@ -131,7 +131,7 @@ class FoodRequestDAOTest {
                 null,
                 null);
         assertEquals(filteredFoodRequests.size(), 1);
-        FoodRequest updatedOne = filteredFoodRequests.get(0);
+        ServiceRequest updatedOne = filteredFoodRequests.get(0);
         FoodRequest correctOne = new FoodRequest(
                 900,
                 "Charlie",
@@ -144,7 +144,7 @@ class FoodRequestDAOTest {
         assertEquals(updatedOne.getRequestID(), correctOne.getRequestID());
         assertEquals(updatedOne.getRequesterName(), correctOne.getRequesterName());
         assertEquals(updatedOne.getLocation(), correctOne.getLocation());
-        assertEquals(updatedOne.getMealType(), correctOne.getMealType());
+        assertEquals(updatedOne.getItemType(), correctOne.getMealType());
         assertEquals(updatedOne.getStaffMember(), correctOne.getStaffMember());
         assertEquals(updatedOne.getAdditionalNotes(), correctOne.getAdditionalNotes());
         assertEquals(updatedOne.getRequestDate().toString(), correctOne.getRequestDate().toString());
@@ -193,7 +193,7 @@ class FoodRequestDAOTest {
                 "You had to hide away for so long (so long). Where did we go wrong?",
                 testLocalDateTime4,
                 RequestStatus.In_Progress);
-        ArrayList<FoodRequest> tempFoodRequestList = aFoodRequestDAO.selectFoodRequests(
+        ArrayList<ServiceRequest> tempFoodRequestList = aFoodRequestDAO.selectFoodRequests(
                 null,
                 null,
                 null,

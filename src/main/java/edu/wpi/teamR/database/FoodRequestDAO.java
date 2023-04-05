@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class FoodRequestDAO { // TODO: make sure tablename is the view
   private static FoodRequestDAO instance;
-  private ArrayList<FoodRequest> foodRequests;
+  private ArrayList<ServiceRequest> foodRequests;
   private String longName, username, password, tableName, schemaName, connectionURL;
 
   private FoodRequestDAO(
@@ -17,7 +17,7 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
     this.schemaName = schemaName;
     this.connectionURL = connectionURL;
 
-    foodRequests = new ArrayList<FoodRequest>();
+    foodRequests = new ArrayList<ServiceRequest>();
     Connection connection = createConnection();
     Statement statement = connection.createStatement();
     ResultSet resultSet = statement.executeQuery("SELECT * FROM "+schemaName+"."+tableName+";");
@@ -47,7 +47,7 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
     return FoodRequestDAO.instance;
   }
 
-  public ArrayList<FoodRequest> getFoodRequests() {
+  public ArrayList<ServiceRequest> getFoodRequests() {
     return foodRequests;
   };
 
@@ -222,7 +222,7 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
       Boolean locationCheck =
               location == null || location.equals(foodRequests.get(i).getLocation());
       Boolean mealTypeCheck =
-              mealType == null || mealType.equals(foodRequests.get(i).getMealType());
+              mealType == null || mealType.equals(foodRequests.get(i).getItemType());
       Boolean staffMemberCheck =
               staffMember == null || staffMember.equals(foodRequests.get(i).getStaffMember());
       Boolean additionalNotesCheck =
@@ -270,18 +270,18 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
     sqlUpdate += "' WHERE requestID = " + requestID + ";";
     statement.executeUpdate(sqlUpdate);
     closeConnection(connection);
-    FoodRequest aFoodRequest =
+    ServiceRequest aFoodRequest =
             selectFoodRequests(requestID, null, null, null, null, null, null, null).get(0);
     aFoodRequest.setRequesterName(requesterName);
     aFoodRequest.setLocation(location);
-    aFoodRequest.setMealType(mealType);
+    aFoodRequest.setItemType(mealType);
     aFoodRequest.setStaffMember(staffMember);
     aFoodRequest.setAdditionalNotes(additionalNotes);
     aFoodRequest.setRequestDate(requestDate);
     aFoodRequest.setRequestStatus(requestStatus);
   }
 
-  public ArrayList<FoodRequest> selectFoodRequests(
+  public ArrayList<ServiceRequest> selectFoodRequests(
           Integer requestID,
           String requesterName,
           String location,
@@ -290,15 +290,15 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
           String additionalNotes,
           Timestamp requestDate,
           RequestStatus requestStatus) {
-    ArrayList<FoodRequest> aList = new ArrayList<FoodRequest>();
-    for (FoodRequest foodRequest : foodRequests) {
+    ArrayList<ServiceRequest> aList = new ArrayList<ServiceRequest>();
+    for (ServiceRequest foodRequest : foodRequests) {
       Boolean requestIDCheck = requestID == null || requestID.equals(foodRequest.getRequestID());
       Boolean requesterNameCheck =
               requesterName == null || requesterName.equals(foodRequest.getRequesterName());
       Boolean locationCheck =
               location == null || location.equals(foodRequest.getLocation());
       Boolean mealTypeCheck =
-              mealType == null || mealType.equals(foodRequest.getMealType());
+              mealType == null || mealType.equals(foodRequest.getItemType());
       Boolean staffMemberCheck =
               staffMember == null || staffMember.equals(foodRequest.getStaffMember());
       Boolean additionalNotesCheck =

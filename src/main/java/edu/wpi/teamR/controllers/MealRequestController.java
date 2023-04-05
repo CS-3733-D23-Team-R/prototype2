@@ -57,14 +57,14 @@ public class MealRequestController {
     }
     Navigation.navigate(Screen.HOME);
     int id = 0;
-    ArrayList<FoodRequest> foodList = FoodRequestDAO.getInstance().getFoodRequests();
-    for(FoodRequest foodRequest: foodList){
+    ArrayList<ServiceRequest> foodList = FoodRequestDAO.getInstance().getFoodRequests();
+    for(ServiceRequest foodRequest: foodList){
       if(id < foodRequest.getRequestID()){
         id = foodRequest.getRequestID();
       }
     }
-    ArrayList<FurnitureRequest> furnList = FurnitureRequestDAO.getInstance().getFurnitureRequests();
-    for(FurnitureRequest furnitureRequest: furnList){
+    ArrayList<ServiceRequest> furnList = FurnitureRequestDAO.getInstance().getFurnitureRequests();
+    for(ServiceRequest furnitureRequest: furnList){
       if(id < furnitureRequest.getRequestID()){
         id = furnitureRequest.getRequestID();
       }

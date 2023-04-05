@@ -57,11 +57,11 @@ class FurnitureRequestDAOTest {
                 first,
                 RequestStatus.Unstarted);
         aFurnitureRequestDAO.addFurnitureRequest(one.getRequestID(), one.getRequesterName(), one.getLocation(), one.getFurnitureType(), one.getStaffMember(),one.getAdditionalNotes(), first, RequestStatus.Unstarted);
-        FurnitureRequest two = aFurnitureRequestDAO.selectFurnitureRequests(one.getRequestID(), null, null, null, null, null, null, null).get(0);
+        ServiceRequest two = aFurnitureRequestDAO.selectFurnitureRequests(one.getRequestID(), null, null, null, null, null, null, null).get(0);
         Boolean matchingRequestID = one.getRequestID()==two.getRequestID();
         Boolean matchingRequesterName = one.getRequesterName().equals(two.getRequesterName());
         Boolean matchingLocation = one.getLocation().equals(two.getLocation());
-        Boolean matchingFurnitureType = one.getFurnitureType().equals(two.getFurnitureType());
+        Boolean matchingFurnitureType = one.getFurnitureType().equals(two.getItemType());
         Boolean matchingStaffMember = one.getStaffMember().equals(two.getStaffMember());
         Boolean matchingAdditionalNotes = one.getAdditionalNotes().equals(two.getAdditionalNotes());
         Boolean matchingTime =  one.getRequestDate().toString().equals(two.getRequestDate().toString());
@@ -92,7 +92,7 @@ class FurnitureRequestDAOTest {
                 "Actually, Id rather go to sleep",
                 first,
                 RequestStatus.In_Progress);
-        ArrayList<FurnitureRequest> filteredFurnitureRequests = aFurnitureRequestDAO.selectFurnitureRequests(
+        ArrayList<ServiceRequest> filteredFurnitureRequests = aFurnitureRequestDAO.selectFurnitureRequests(
                 null,
                 "Charles",
                 null,
@@ -102,7 +102,7 @@ class FurnitureRequestDAOTest {
                 null,
                 null);
         assertEquals(filteredFurnitureRequests.size(), 1);
-        FurnitureRequest updatedOne = filteredFurnitureRequests.get(0);
+        ServiceRequest updatedOne = filteredFurnitureRequests.get(0);
         FurnitureRequest correctOne = new FurnitureRequest(
                 101,
                 "Charles",
@@ -115,7 +115,7 @@ class FurnitureRequestDAOTest {
         assertEquals(updatedOne.getRequestID(), correctOne.getRequestID());
         Boolean matchingRequesterName = updatedOne.getRequesterName().equals(correctOne.getRequesterName());
         Boolean matchingLocation = updatedOne.getLocation().equals(correctOne.getLocation());
-        Boolean matchingFurnitureType = updatedOne.getFurnitureType().equals(correctOne.getFurnitureType());
+        Boolean matchingFurnitureType = updatedOne.getItemType().equals(correctOne.getFurnitureType());
         Boolean matchingStaffMember = updatedOne.getStaffMember().equals(correctOne.getStaffMember());
         Boolean matchingAdditionalNotes = updatedOne.getAdditionalNotes().equals(correctOne.getAdditionalNotes());
         Boolean matchingTime =  updatedOne.getRequestDate().toString().equals(correctOne.getRequestDate().toString());
@@ -169,7 +169,7 @@ class FurnitureRequestDAOTest {
                 testStamp4,
                 RequestStatus.Complete
         );
-        ArrayList<FurnitureRequest> tempFurnitureRequestList = aFurnitureRequestDAO.selectFurnitureRequests(
+        ArrayList<ServiceRequest> tempFurnitureRequestList = aFurnitureRequestDAO.selectFurnitureRequests(
                 null,
                 null,
                 null,
