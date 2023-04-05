@@ -28,8 +28,8 @@
             <TableView fx:id="nodesTable" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
               <columns>
                 <TableColumn fx:id="nodeIDColumn" prefWidth="207.66665649414062" text="nodeID" />
-                <TableColumn prefWidth="252.83334350585938" text="X-Coordination" fx:id="xCoordinationColumn" />
-                  <TableColumn fx:id="yCoordinationColumn" minWidth="0.0" prefWidth="272.3333435058594" text="Y-Coordination" />
+                <TableColumn prefWidth="252.83334350585938" text="X-Coordinate" fx:id="xCoordinateColumn" />
+                  <TableColumn fx:id="yCoordinateColumn" minWidth="0.0" prefWidth="272.3333435058594" text="Y-Coordinate" />
                   <TableColumn fx:id="floorColumn" prefWidth="231.5" text="Floor" />
                   <TableColumn fx:id="buildingColumn" prefWidth="216.8333740234375" text="Building" />
               </columns>
