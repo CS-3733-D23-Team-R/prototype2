@@ -10,30 +10,40 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UpdateNodesController {
 
-  static NodeDAO dao;
+  NodeDAO dao;
   @FXML MFXButton backButton;
-  @FXML TableView nodesTable;
+  @FXML TableView<Node> nodesTable;
   @FXML TableColumn nodeIDColumn;
-  @FXML TableColumn xCoordinationColumn;
-  @FXML TableColumn yCoordinationColumn;
+  @FXML TableColumn xCoordinateColumn;
+  @FXML TableColumn yCoordinateColumn;
   @FXML TableColumn floorColumn;
   @FXML TableColumn buildingColumn;
 
-  private ObservableList<Node> nodeTypeList =
-          FXCollections.observableArrayList();
-
   @FXML
-  public void initialize() {
+  public void initialize() throws SQLException, ClassNotFoundException {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
-
+    setTableColumns();
   }
-  @FXML
-  public ArrayList<Node> getNodes(){
-    dao = NodeDAO.getInstance();
-    return dao.getNodes();
+
+  public void setTableColumns() throws SQLException, ClassNotFoundException {
+    dao = NodeDAO.createInstance("teamr", "teamr150", "node",
+            "prototype2", "jdbc:postgresql://database.cs.wpi.edu:5432/teamrdb");
+
+    ArrayList<Node> nodeList = dao.getNodes();
+    ObservableList<Node> tableData = FXCollections.observableArrayList(nodeList);
+    nodesTable.setItems(tableData);
+
+    nodeIDColumn.setCellValueFactory(new PropertyValueFactory<Node, Integer>("nodeID"));
+    xCoordinateColumn.setCellValueFactory(new PropertyValueFactory<Node, Integer>("xCoord"));
+    yCoordinateColumn.setCellValueFactory(new PropertyValueFactory<Node, Integer>("yCoord"));
+    floorColumn.setCellValueFactory(new PropertyValueFactory<Node, String>("floorNum"));
+    buildingColumn.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
   }
 }

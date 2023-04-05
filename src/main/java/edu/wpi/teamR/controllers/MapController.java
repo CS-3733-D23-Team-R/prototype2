@@ -10,8 +10,7 @@ import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -20,8 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.*;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -200,18 +197,18 @@ public class MapController {
     Node startNode = nodes.selectNodeByID(startID);
     Node endNode = nodes.selectNodeByID(endID);
 
-    System.out.println(endNode.getxCoord());
-    System.out.println(startNode.getxCoord());
+    System.out.println(endNode.getXCoord());
+    System.out.println(startNode.getXCoord());
 
-    Circle start = new Circle(startNode.getxCoord(), startNode.getyCoord(), 5, Color.RED);
+    Circle start = new Circle(startNode.getXCoord(), startNode.getYCoord(), 5, Color.RED);
     Text startText = new Text(nameFromID(startNode.getNodeID()));
-    startText.setX(startNode.getxCoord() + 10);
-    startText.setY(startNode.getyCoord());
+    startText.setX(startNode.getXCoord() + 10);
+    startText.setY(startNode.getYCoord());
     startText.setFill(Color.RED);
-    Circle end = new Circle(endNode.getxCoord(), endNode.getyCoord(), 5, Color.RED);
+    Circle end = new Circle(endNode.getXCoord(), endNode.getYCoord(), 5, Color.RED);
     Text endText = new Text(nameFromID(endNode.getNodeID()));
-    endText.setX(endNode.getxCoord() + 10);
-    endText.setY(endNode.getyCoord());
+    endText.setX(endNode.getXCoord() + 10);
+    endText.setY(endNode.getYCoord());
     endText.setFill(Color.RED);
 
     pathPane.getChildren().add(start);
@@ -223,7 +220,7 @@ public class MapController {
       Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
       Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
       if (n1.getFloorNum().equals(startNode.getFloorNum()) && n2.getFloorNum().equals(startNode.getFloorNum())) {
-        Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
+        Line l1 = new Line(n1.getXCoord(), n1.getYCoord(), n2.getXCoord(), n2.getYCoord());
         pathPane.getChildren().add(l1);
       }
     }
