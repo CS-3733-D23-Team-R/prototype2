@@ -76,6 +76,14 @@ public class MapController {
     "Third Floor"
   };
 
+  String[] nodeFloorNames = {
+          "L2",
+          "L1",
+          "1",
+          "2",
+          "3"
+  };
+
   private AnchorPane mapPane = new AnchorPane();
   private AnchorPane pathPane = new AnchorPane();
 
@@ -222,7 +230,7 @@ public class MapController {
     for (int i = 0; i < mapPath.getPath().size() - 1; i++) {
       Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
       Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
-      if (n1.getFloorNum().equals(startNode.getFloorNum()) && n2.getFloorNum().equals(startNode.getFloorNum())) {
+      if (n1.getFloorNum().equals(nodeFloorNames[currentFloor]) && n2.getFloorNum().equals(nodeFloorNames[currentFloor])) {
         Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
         pathPane.getChildren().add(l1);
       }
