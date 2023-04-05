@@ -44,11 +44,11 @@ class NodeDAOTest {
     void addAndDeleteNode() throws Exception {
         dao.deleteNodes(null, null, null, null, null);
         Node node = new Node(343, 9323, 2938, "2", "other bud");
-        dao.addNode(node.getNodeID(),node.getxCoord(),node.getyCoord(),node.getFloorNum(),node.getBuilding());
+        dao.addNode(node.getNodeID(),node.getXCoord(),node.getYCoord(),node.getFloorNum(),node.getBuilding());
         Node node2 = dao.selectNodes(343, null, null, null, null).get(0);
         assertEquals(node.getNodeID(), node2.getNodeID());
-        assertEquals(node.getxCoord(), node2.getxCoord());
-        assertEquals(node.getyCoord(), node2.getyCoord());
+        assertEquals(node.getXCoord(), node2.getXCoord());
+        assertEquals(node.getYCoord(), node2.getYCoord());
         assertEquals(node.getFloorNum(), node2.getFloorNum());
         assertEquals(node.getBuilding(), node2.getBuilding());
         dao.deleteNodes(343, null, null, null, null);
@@ -64,8 +64,8 @@ class NodeDAOTest {
         Node node = nodes.get(0);
         Node node2 = new Node(344, 0, 0, "L2", "The third one");
         assertTrue(Objects.equals(node.getNodeID(), node2.getNodeID()));
-        assertTrue(Objects.equals(node.getxCoord(), node2.getxCoord()));
-        assertTrue(Objects.equals(node.getyCoord(), node2.getyCoord()));
+        assertTrue(Objects.equals(node.getXCoord(), node2.getXCoord()));
+        assertTrue(Objects.equals(node.getYCoord(), node2.getYCoord()));
         assertTrue(node.getFloorNum().equals(node2.getFloorNum()));
         assertTrue(node.getBuilding().equals(node2.getBuilding()));
         dao.deleteNodes(344, null, null, null, null);

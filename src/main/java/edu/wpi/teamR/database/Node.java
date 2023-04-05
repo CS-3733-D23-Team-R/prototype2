@@ -20,7 +20,7 @@ public class Node {
         this.nodeID = nodeID;
     }
 
-    public Integer getxCoord() {
+    public Integer getXCoord() {
         return xCoord;
     }
 
@@ -28,7 +28,7 @@ public class Node {
         this.xCoord = xCoord;
     }
 
-    public Integer getyCoord() {
+    public Integer getYCoord() {
         return yCoord;
     }
 
