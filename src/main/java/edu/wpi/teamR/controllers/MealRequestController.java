@@ -1,6 +1,7 @@
 package edu.wpi.teamR.controllers;
 
-import edu.wpi.teamR.database.*;
+import edu.wpi.teamR.database.FoodRequestDAO;
+import edu.wpi.teamR.database.RequestStatus;
 import edu.wpi.teamR.fields.MealFields;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class MealRequestController {
 
@@ -28,7 +28,7 @@ public class MealRequestController {
   @FXML MFXTextField notesField;
   @FXML ChoiceBox mealTypeBox;
 
-
+  private MealFields mealField;
 
   ObservableList<String> mealTypeList =
       FXCollections.observableArrayList("Chicken", "Beef", "Fish");
@@ -50,30 +50,29 @@ public class MealRequestController {
   }
 
   @FXML
-  public void submit(){
+  public void submit() {
     String mealType = mealTypeBox.getValue().toString();
     if (mealType == "Select Meal") {
       mealType = "";
     }
+    System.out.println(
+        mealField.getName()
+            + " "
+            + mealField.getLocation()
+            + " "
+            + mealField.getStaffMember()
+            + " "
+            + mealField.getNotes()
+            + " "
+            + mealField.getMeal());
     Navigation.navigate(Screen.HOME);
-    int id = 0;
-    ArrayList<FoodRequest> foodList = FoodRequestDAO.getInstance().getFoodRequests();
-    for(FoodRequest foodRequest: foodList){
-      if(id < foodRequest.getRequestID()){
-        id = foodRequest.getRequestID();
-      }
+    try{
+      FoodRequestDAO.getInstance().addFoodRequest(nameField.getText(),locationField.getText(), mealType, "unassigned", notesField.getText(), CurrentDateTime(), RequestStatus.Unstarted);
     }
-    ArrayList<FurnitureRequest> furnList = FurnitureRequestDAO.getInstance().getFurnitureRequests();
-    for(FurnitureRequest furnitureRequest: furnList){
-      if(id < furnitureRequest.getRequestID()){
-        id = furnitureRequest.getRequestID();
-      }
+    catch(SQLException e){
+      e.printStackTrace();
     }
-    id++;
-    try {
-      FoodRequestDAO.getInstance().addFoodRequest(id, nameField.getText(), locationField.getText(), mealType, staffMemberField.getText(), notesField.getText(), CurrentDateTime(), RequestStatus.Unstarted);
-    }
-    catch(Exception e) {
+    catch(ClassNotFoundException e){
       e.printStackTrace();
     }
   }
