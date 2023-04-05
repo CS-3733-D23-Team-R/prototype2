@@ -89,7 +89,7 @@ public class MoveDAO {
         if (count == 0) {
           sqlDelete += " AND ";
         }
-        sqlDelete += "moveDate =" + moveDate;
+        sqlDelete += "moveDate =\'" + moveDate + "\'";
       }
       sqlDelete += ";";
       statement.executeUpdate(sqlDelete);
