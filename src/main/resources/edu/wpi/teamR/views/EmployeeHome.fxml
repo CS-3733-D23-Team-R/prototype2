@@ -37,7 +37,7 @@
                   <Font name="Times New Roman" size="20.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="CSVReaderButton" layoutX="175.0" layoutY="545.0" text="CSV Reader">
+            <MFXButton fx:id="CSVReaderButton" layoutX="175.0" layoutY="545.0" text="CSV Import/Export">
                <font>
                   <Font name="Times New Roman" size="20.0" />
                </font>

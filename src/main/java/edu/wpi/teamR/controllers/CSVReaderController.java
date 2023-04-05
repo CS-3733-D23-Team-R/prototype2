@@ -98,12 +98,15 @@ public class CSVReaderController {
     String choice = importMenu.getValue();
     switch (choice) {
       case "Node":
+        edges.deleteAllEdges();
+        moves.deleteMove(null, null, null);
         nodes.readCSV(selectedFile.getPath());
         break;
       case "Edge":
         edges.readCSV(selectedFile.getPath());
         break;
       case "LocationName":
+        moves.deleteMove(null, null, null);
         locationNames.readCSV(selectedFile.getPath());
         break;
       case "Moves":
@@ -125,16 +128,16 @@ public class CSVReaderController {
     String choice = exportMenu.getValue();
     switch (choice) {
       case "Node":
-        nodes.writeCSV(selectedDirectory.getAbsolutePath());
+        nodes.writeCSV(selectedDirectory.getAbsolutePath() + "/nodes.csv");
         break;
       case "Edge":
-        edges.writeCSV(selectedDirectory.getAbsolutePath());
+        edges.writeCSV(selectedDirectory.getAbsolutePath() + "/edges.csv");
         break;
       case "LocationName":
-        locationNames.writeCSV(selectedDirectory.getAbsolutePath());
+        locationNames.writeCSV(selectedDirectory.getAbsolutePath() + "/locationNames.csv");
         break;
       case "Moves":
-        moves.writeCSV(selectedDirectory.getAbsolutePath());
+        moves.writeCSV(selectedDirectory.getAbsolutePath() + "/moves.csv");
         break;
     }
     selectedDirectory = null;
