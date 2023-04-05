@@ -72,38 +72,38 @@ public class NodeDAO {
         if(nodeID == null && xCoord == null && yCoord == null && floorNum == null && building == null){
             sqlDelete = "DELETE FROM " + schemaName + "." + tableName + ";";
         } else{
-            sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE ";
+            sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE";
             int count = 0;
             if(nodeID != null){
                 count++;
-                sqlDelete += "nodeID = " + nodeID;
+                sqlDelete += " nodeID = " + nodeID;
             }
             if(xCoord != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
                 count++;
-                sqlDelete += "xCoord = " + xCoord;
+                sqlDelete += " xCoord = " + xCoord;
             }
             if(yCoord != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
                 count++;
-                sqlDelete += "yCoord = " + yCoord;
+                sqlDelete += " yCoord = " + yCoord;
             }
             if(floorNum != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
                 count++;
-                sqlDelete += "floorNum = " + "'" + floorNum+ "'";
+                sqlDelete += " floorNum = " + "'" + floorNum+ "'";
             }
             if(building != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
-                sqlDelete += "building = " + "'" + building + "'";
+                sqlDelete += " building = " + "'" + building + "'";
             }
             sqlDelete += ";";
         }
