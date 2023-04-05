@@ -100,6 +100,7 @@ public class UpdateLocationNameController{
                 deleteButton.setOnAction(event -> {
                     LocationName locationName = getTableView().getItems().get(getIndex());
                     try {
+                        MoveDAO.getInstance().deleteMove(null, locationName.getLongName(), null);
                         dao.deleteLocationNames(locationName.getLongName(), locationName.getShortName(), locationName.getNodeType());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
