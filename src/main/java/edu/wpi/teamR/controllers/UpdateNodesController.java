@@ -38,26 +38,38 @@ public class UpdateNodesController {
     xCoordinateColumn.setOnEditCommit(event -> {
       Node node = event.getRowValue();
       node.setxCoord(event.getNewValue());
-      int nodeID = getID(node);
       try {
-        dao.modifyNodeByID(nodeID, event.getNewValue(), null, null, null);
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      } catch (ClassNotFoundException e) {
+        dao.modifyNodeByID(node.getNodeID(), event.getNewValue(), node.getYCoord(), node.getFloorNum(), node.getBuilding());
+      } catch (SQLException | ClassNotFoundException e) {
         throw new RuntimeException(e);
       }
     });
     yCoordinateColumn.setOnEditCommit(event -> {
       Node node = event.getRowValue();
       node.setyCoord(event.getNewValue());
+      try {
+        dao.modifyNodeByID(node.getNodeID(), node.getXCoord(), event.getNewValue(), node.getFloorNum(), node.getBuilding());
+      } catch (SQLException | ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     });
     floorColumn.setOnEditCommit(event -> {
       Node node = event.getRowValue();
       node.setFloorNum(event.getNewValue());
+      try {
+        dao.modifyNodeByID(node.getNodeID(), node.getXCoord(), node.getYCoord(), event.getNewValue(), node.getBuilding());
+      } catch (SQLException | ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     });
     buildingColumn.setOnEditCommit(event -> {
       Node node = event.getRowValue();
       node.setBuilding(event.getNewValue());
+      try {
+        dao.modifyNodeByID(node.getNodeID(), node.getXCoord(), node.getYCoord(), node.getFloorNum(), event.getNewValue());
+      } catch (SQLException | ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     });
   }
 
@@ -87,9 +99,7 @@ public class UpdateNodesController {
           Node node = getTableView().getItems().get(getIndex());
           try {
             dao.deleteNodes(node.getNodeID(), node.getXCoord(), node.getYCoord(), node.getFloorNum(), node.getBuilding());
-          } catch (SQLException e) {
-            throw new RuntimeException(e);
-          } catch (ClassNotFoundException e) {
+          } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
           }
           getTableView().getItems().remove(node);
@@ -107,9 +117,5 @@ public class UpdateNodesController {
         }
       }
     });
-  }
-
-  public static int getID(Node n) {
-    return n.getNodeID();
   }
 }
