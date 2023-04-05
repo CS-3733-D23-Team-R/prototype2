@@ -2,8 +2,10 @@ package edu.wpi.teamR.controllers;
 
 import edu.wpi.teamR.database.Move;
 import edu.wpi.teamR.database.MoveDAO;
+
 import edu.wpi.teamR.database.Node;
 import edu.wpi.teamR.database.NotFoundException;
+
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -43,6 +45,7 @@ public class UpdateMoveController{
         setTableColumns();
 
 
+
         nameColumn.setOnEditCommit(event -> {
             Move move = event.getRowValue();
             move.setLongName(event.getNewValue());
@@ -62,6 +65,7 @@ public class UpdateMoveController{
                 throw new RuntimeException(e);
             }
         });
+
     }
 
     public void setTableColumns() throws SQLException, ClassNotFoundException {
@@ -84,9 +88,14 @@ public class UpdateMoveController{
             {
                 deleteButton.setOnAction(event -> {
                     Move move = getTableView().getItems().get(getIndex());
+
+                    try {
+                        dao.deleteMove(move.getNodeID(), move.getLongName(), move.getMoveDate());
+
                     java.sql.Date sqlDate = new java.sql.Date(move.getMoveDate().getTime());
                     try {
                         dao.deleteMove(move.getNodeID(), move.getLongName(), sqlDate);
+
                     } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
