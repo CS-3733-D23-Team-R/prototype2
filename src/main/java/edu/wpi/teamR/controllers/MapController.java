@@ -32,6 +32,7 @@ import javafx.util.Duration;
 import net.kurobako.gesturefx.*;
 import edu.wpi.teamR.pathfinding.*;
 import edu.wpi.teamR.database.*;
+import org.controlsfx.control.SearchableComboBox;
 
 public class MapController {
   @FXML MFXButton resetButton;
@@ -41,9 +42,9 @@ public class MapController {
   @FXML MFXCheckbox accessibleCheckbox;
 
   @FXML
-  MFXComboBox<String> startField;
+  SearchableComboBox<String> startField;
   @FXML
-  MFXComboBox<String> endField;
+  SearchableComboBox<String> endField;
 
   @FXML MFXButton homeButton;
   @FXML BorderPane borderPane;
@@ -54,8 +55,6 @@ public class MapController {
   @FXML Text floorText;
   @FXML MFXButton clearButton;
   @FXML MFXCheckbox textCheckbox;
-
-  URL groundFloorLink = Main.class.getResource("images/00_thegroundfloor.png");
   URL firstFloorLink = Main.class.getResource("images/01_thefirstfloor.png");
   URL secondFloorLink = Main.class.getResource("images/02_thesecondfloor.png");
   URL thirdFloorLink = Main.class.getResource("images/03_thethirdfloor.png");
@@ -63,16 +62,15 @@ public class MapController {
   URL LLTwoLink = Main.class.getResource("images/00_thelowerlevel2.png");
 
   ImageView imageView;
-  int currentFloor = 3;
+  int currentFloor = 2;
 
   URL[] linkArray = {
-    LLTwoLink, LLOneLink, groundFloorLink, firstFloorLink, secondFloorLink, thirdFloorLink,
+    LLTwoLink, LLOneLink, firstFloorLink, secondFloorLink, thirdFloorLink,
   };
 
   String[] floorNames = {
     "Lower Level Two",
     "Lower Level One",
-    "Ground Floor",
     "First Floor",
     "Second Floor",
     "Third Floor"
@@ -206,16 +204,28 @@ public class MapController {
     System.out.println(startNode.getxCoord());
 
     Circle start = new Circle(startNode.getxCoord(), startNode.getyCoord(), 5, Color.RED);
+    Text startText = new Text(nameFromID(startNode.getNodeID()));
+    startText.setX(startNode.getxCoord() + 10);
+    startText.setY(startNode.getyCoord());
+    startText.setFill(Color.RED);
     Circle end = new Circle(endNode.getxCoord(), endNode.getyCoord(), 5, Color.RED);
+    Text endText = new Text(nameFromID(endNode.getNodeID()));
+    endText.setX(endNode.getxCoord() + 10);
+    endText.setY(endNode.getyCoord());
+    endText.setFill(Color.RED);
 
     pathPane.getChildren().add(start);
     pathPane.getChildren().add(end);
+    pathPane.getChildren().add(startText);
+    pathPane.getChildren().add(endText);
 
     for (int i = 0; i < mapPath.getPath().size() - 1; i++) {
       Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
       Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
-      Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
-      pathPane.getChildren().add(l1);
+      if (n1.getFloorNum().equals(startNode.getFloorNum()) && n2.getFloorNum().equals(startNode.getFloorNum())) {
+        Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
+        pathPane.getChildren().add(l1);
+      }
     }
   }
 
