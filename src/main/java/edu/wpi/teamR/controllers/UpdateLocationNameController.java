@@ -1,30 +1,16 @@
 package edu.wpi.teamR.controllers;
 
-import edu.wpi.teamR.database.Node;
-import edu.wpi.teamR.navigation.Navigation;
-import edu.wpi.teamR.navigation.Screen;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
-public class UpdateLocationNameController{
-    @FXML
-    MFXButton backButton;
-    @FXML
-    TableView nodesTable;
-    @FXML TableColumn longNameColumn;
-    @FXML TableColumn shortNameColumn;
-    @FXML TableColumn nodeTypeColumn;
+public class UpdateLocationNameController extends Application {
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-    @FXML
-    public void initialize() {
-        backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
+    @Override
+    public void start(Stage primaryStage) {
 
     }
 }

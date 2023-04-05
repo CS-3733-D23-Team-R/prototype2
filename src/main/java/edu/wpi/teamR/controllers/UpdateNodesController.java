@@ -8,8 +8,8 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javax.swing.table.TableColumn;
 import java.util.ArrayList;
 
 public class UpdateNodesController {
@@ -18,17 +18,17 @@ public class UpdateNodesController {
   @FXML MFXButton backButton;
   @FXML TableView nodesTable;
   @FXML TableColumn nodeIDColumn;
-  @FXML TableColumn xCoordinationColumn;
-  @FXML TableColumn yCoordinationColumn;
-  @FXML TableColumn floorColumn;
-  @FXML TableColumn buildingColumn;
+  @FXML TableColumn locationNameColumn;
+  @FXML TableColumn startNodeColumn;
+  @FXML TableColumn endNodeColumn;
 
   private ObservableList<Node> nodeTypeList =
-          FXCollections.observableArrayList();
+          FXCollections.observableArrayList()
 
   @FXML
   public void initialize() {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
+    nodeIDColumn
 
   }
   @FXML
