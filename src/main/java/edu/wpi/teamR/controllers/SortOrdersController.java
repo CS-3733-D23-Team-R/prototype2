@@ -7,7 +7,6 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,25 +16,28 @@ public class SortOrdersController {
   @FXML TableView requestTable;
   @FXML TableColumn nameColumn;
   @FXML TableColumn locationColumn;
-  @FXML TableColumn staffMemberColumn;
+  @FXML TableColumn requestTypeColumn;
   @FXML TableColumn notesColumn;
-  @FXML TableColumn mealColumn;
-  @FXML ChoiceBox sortListByBox;
+  @FXML TableColumn staffMemberColumn;
+  @FXML TableColumn timeColumn;
+  @FXML TableColumn statusColumn;
   @FXML MFXButton backButton;
 
-  ObservableList<String> orderList = FXCollections.observableArrayList("Name", "Location", "Meal");
+  // for un-used choice box
+  // ObservableList<String> orderList = FXCollections.observableArrayList("Name", "Location", "Request Type", "Notes", "Staff Member", "Time", "Status");
 
   @FXML
   public void initialize() {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
-    sortListByBox.setValue("Default");
-    sortListByBox.setItems(orderList);
     nameColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Name"));
     locationColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Location"));
-    staffMemberColumn.setCellValueFactory(
-        new PropertyValueFactory<MealFields, String>("Staff Member"));
+    requestTypeColumn.setCellValueFactory(
+        new PropertyValueFactory<MealFields, String>("requestType"));
     notesColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Notes"));
-    mealColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Meal"));
+    staffMemberColumn.setCellValueFactory(
+        new PropertyValueFactory<MealFields, String>("staffMember"));
+    timeColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Time"));
+    statusColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Status"));
 
     requestTable.setItems(getRequests());
   }
