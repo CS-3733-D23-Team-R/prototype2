@@ -14,6 +14,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.animation.Interpolator;
 import javafx.collections.FXCollections;
@@ -84,8 +85,11 @@ public class MapController {
           "3"
   };
 
+  AnchorPane[] paths = new AnchorPane[5];
+
   private AnchorPane mapPane = new AnchorPane();
-  private AnchorPane pathPane = new AnchorPane();
+
+  HashMap<String, Integer> floorNamesMap = new HashMap<String, Integer>();
 
   private NodeDAO nodes;
   private EdgeDAO edges;
@@ -99,6 +103,11 @@ public class MapController {
 
   @FXML
   public void initialize() throws Exception {
+    for (int i = 0; i < 5; i++) {
+      paths[i] = new AnchorPane();
+      floorNamesMap.put(nodeFloorNames[i], i);
+    }
+
     imageView = new ImageView(linkArray[currentFloor].toExternalForm());
     gesturePane.setContent(mapPane); // set to groundfloor
     mapPane.getChildren().add(imageView);
@@ -119,6 +128,7 @@ public class MapController {
     floorText.setText(floorNames[currentFloor]);
     startField.setValue("Select Start");
     endField.setValue("Select End");
+
     reset();
 
     nodes = NodeDAO.createInstance(username, password, "node", schemaName, url);
@@ -135,12 +145,14 @@ public class MapController {
     gesturePane.zoomTo(0.25, 0.25, new Point2D(2500, 1700));
     gesturePane.zoomTo(0.25, 0.25, new Point2D(2500, 1700));
     gesturePane.centreOn(new Point2D(2500, 1700));
-    clearPath();
   }
 
   public void clearPath() {
-    pathPane.getChildren().clear();
-    mapPane.getChildren().remove(pathPane);
+    paths[currentFloor].getChildren().clear();
+    mapPane.getChildren().remove(paths[currentFloor]);
+    for (int i = 0; i < 5; i++) {
+      paths[i] = new AnchorPane();
+    }
   }
 
   // zoom into a desired location
@@ -176,9 +188,9 @@ public class MapController {
       imageView = new ImageView(linkArray[currentFloor].toExternalForm());
       mapPane.getChildren().clear();
       mapPane.getChildren().add(imageView);
-      // gesturePane.setContent(floorArray[currentFloor]); // set to ground floor
+      mapPane.getChildren().add(paths[currentFloor]);
       floorText.setText(floorNames[currentFloor]);
-      reset();
+      //reset();
     }
   }
 
@@ -188,15 +200,27 @@ public class MapController {
       imageView = new ImageView(linkArray[currentFloor].toExternalForm());
       mapPane.getChildren().clear();
       mapPane.getChildren().add(imageView);
-      // gesturePane.setContent(floorArray[currentFloor]); // set to ground floor
+      mapPane.getChildren().add(paths[currentFloor]);
       floorText.setText(floorNames[currentFloor]);
-      reset();
+      //reset();
+    }
+  }
+
+  public void displayFloorNum(int floorNum) {
+    if (floorNum < 5) {
+      currentFloor = floorNum;
+      imageView = new ImageView(linkArray[currentFloor].toExternalForm());
+      mapPane.getChildren().clear();
+      mapPane.getChildren().add(imageView);
+      mapPane.getChildren().add(paths[currentFloor]);
+      floorText.setText(floorNames[currentFloor]);
+      //reset();
     }
   }
 
   public void displayPath(String startLocation, String endLocation, Boolean accessible) throws Exception {
     clearPath();
-    mapPane.getChildren().add(pathPane);
+    mapPane.getChildren().add(paths[currentFloor]);
 
     int startID = idFromName(startLocation);
     int endID = idFromName(endLocation);
@@ -208,33 +232,37 @@ public class MapController {
     Node startNode = nodes.selectNodeByID(startID);
     Node endNode = nodes.selectNodeByID(endID);
 
-    System.out.println(endNode.getxCoord());
-    System.out.println(startNode.getxCoord());
+    if (startNode.getFloorNum() != nodeFloorNames[currentFloor]){
+      displayFloorNum(floorNamesMap.get(startNode.getFloorNum()));
+    }
 
     Circle start = new Circle(startNode.getxCoord(), startNode.getyCoord(), 5, Color.RED);
     Text startText = new Text(nameFromID(startNode.getNodeID()));
     startText.setX(startNode.getxCoord() + 10);
     startText.setY(startNode.getyCoord());
     startText.setFill(Color.RED);
+    paths[currentFloor].getChildren().add(start);
+    paths[currentFloor].getChildren().add(startText);
+
+    int drawFloor = currentFloor;
+    for (int i = 0; i < mapPath.getPath().size() - 1; i++) {
+      Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
+      Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
+      if (n1.getFloorNum().equals(nodeFloorNames[drawFloor]) && n2.getFloorNum().equals(nodeFloorNames[drawFloor])) {
+        Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
+        paths[drawFloor].getChildren().add(l1);
+      }
+      else {
+        drawFloor = floorNamesMap.get(n2.getFloorNum());
+      }
+    }
     Circle end = new Circle(endNode.getxCoord(), endNode.getyCoord(), 5, Color.RED);
     Text endText = new Text(nameFromID(endNode.getNodeID()));
     endText.setX(endNode.getxCoord() + 10);
     endText.setY(endNode.getyCoord());
     endText.setFill(Color.RED);
-
-    pathPane.getChildren().add(start);
-    pathPane.getChildren().add(end);
-    pathPane.getChildren().add(startText);
-    pathPane.getChildren().add(endText);
-
-    for (int i = 0; i < mapPath.getPath().size() - 1; i++) {
-      Node n1 = nodes.selectNodeByID(mapPath.getPath().get(i));
-      Node n2 = nodes.selectNodeByID(mapPath.getPath().get(i + 1));
-      if (n1.getFloorNum().equals(nodeFloorNames[currentFloor]) && n2.getFloorNum().equals(nodeFloorNames[currentFloor])) {
-        Line l1 = new Line(n1.getxCoord(), n1.getyCoord(), n2.getxCoord(), n2.getyCoord());
-        pathPane.getChildren().add(l1);
-      }
-    }
+    paths[drawFloor].getChildren().add(end);
+    paths[drawFloor].getChildren().add(endText);
   }
 
   private static int idFromName(String longname) throws NotFoundException {
