@@ -38,5 +38,28 @@ public class UpdateEdgeController{
         startNodeColumn.setCellValueFactory(new PropertyValueFactory<>("startNode"));
         endNodeColumn.setCellValueFactory(new PropertyValueFactory<>("endNode"));
         nodesTable.getColumns().setAll(startNodeColumn, endNodeColumn);
+
+        startNodeColumn.setOnEditCommit(event -> {
+            Edge edge = event.getRowValue();
+            Integer oldStart = edge.getStartNode();
+            edge.setStartNode(event.getNewValue());
+            try {
+                eDAO.deleteConnectingEdge(oldStart, edge.getEndNode());
+                eDAO.addEdge(edge.getStartNode(), edge.getEndNode());
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        endNodeColumn.setOnEditCommit(event -> {
+            Edge edge = event.getRowValue();
+            Integer oldEnd = edge.getEndNode();
+            edge.setStartNode(event.getNewValue());
+            try {
+                eDAO.deleteConnectingEdge(edge.getStartNode(), oldEnd);
+                eDAO.addEdge(edge.getStartNode(), edge.getEndNode());
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
