@@ -25,11 +25,16 @@
     <center>
         <AnchorPane BorderPane.alignment="CENTER">
             <children>
+
                 <TableView fx:id="nodesTable" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
+
+                <TableView fx:id="nodesTable" editable="true" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
+
                     <columns>
-                        <TableColumn fx:id="nodeIDColumn" prefWidth="364.0" text="nodeID" />
+                        <TableColumn fx:id="nodeIDColumn" prefWidth="264.0" text="nodeID" />
                         <TableColumn fx:id="nameColumn" prefWidth="473.3333740234375" text="Name" />
                         <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="341.6666259765625" text="Date" />
+                  <TableColumn fx:id="deleteColumn" minWidth="0.0" prefWidth="100.0" text="Delete" />
                     </columns>
                 </TableView>
             </children>

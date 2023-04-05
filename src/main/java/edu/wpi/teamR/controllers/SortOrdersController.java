@@ -1,54 +1,58 @@
 package edu.wpi.teamR.controllers;
 
+import edu.wpi.teamR.database.*;
 import edu.wpi.teamR.fields.MealFields;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.security.auth.callback.Callback;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
 public class SortOrdersController {
 
   @FXML TableView requestTable;
+  @FXML TableColumn idColumn;
   @FXML TableColumn nameColumn;
   @FXML TableColumn locationColumn;
-  @FXML TableColumn staffMemberColumn;
+  @FXML TableColumn requestTypeColumn;
   @FXML TableColumn notesColumn;
-  @FXML TableColumn mealColumn;
-  @FXML ChoiceBox sortListByBox;
+  @FXML TableColumn staffMemberColumn;
+  @FXML TableColumn timeColumn;
+  @FXML TableColumn statusColumn;
   @FXML MFXButton backButton;
 
-  ObservableList<String> orderList = FXCollections.observableArrayList("Name", "Location", "Meal");
 
   @FXML
   public void initialize() {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
-    sortListByBox.setValue("Default");
-    sortListByBox.setItems(orderList);
-    nameColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Name"));
-    locationColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Location"));
-    staffMemberColumn.setCellValueFactory(
-        new PropertyValueFactory<MealFields, String>("Staff Member"));
-    notesColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Notes"));
-    mealColumn.setCellValueFactory(new PropertyValueFactory<MealFields, String>("Meal"));
 
-    requestTable.setItems(getRequests());
-  }
+    idColumn.setCellValueFactory(new PropertyValueFactory<>("requestID"));
+    nameColumn.setCellValueFactory(new PropertyValueFactory<>("requesterName"));
+    locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+    staffMemberColumn.setCellValueFactory(new PropertyValueFactory<>("staffMember"));
+    notesColumn.setCellValueFactory(new PropertyValueFactory<>("additionalNotes"));
+    timeColumn.setCellValueFactory(new PropertyValueFactory<>("requestDate"));
+    statusColumn.setCellValueFactory(new PropertyValueFactory<>("requestStatus"));
+    requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("itemType"));
 
-  public ObservableList<MealFields> getRequests() {
-    ObservableList<MealFields> meals = FXCollections.observableArrayList();
+    for (FoodRequest foodRequest : FoodRequestDAO.getInstance().getFoodRequests()) {
+      requestTable.getItems().add(foodRequest);
+    }
 
-    // test list
-    meals.add(new MealFields("me", "here", "staff", "hi", "chicken"));
-    meals.add(new MealFields("you", "there", "staff2", "bye", "beef"));
-    meals.add(new MealFields("a", "a", "a", "a", "a"));
-    meals.add(new MealFields("z", "z", "z", "z", "z"));
+    for (FurnitureRequest furnRequest : FurnitureRequestDAO.getInstance().getFurnitureRequests()) {
+      requestTable.getItems().add(furnRequest);
+    }
 
-    return meals;
+
   }
 }

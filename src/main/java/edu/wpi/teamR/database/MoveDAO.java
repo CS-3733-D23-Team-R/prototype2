@@ -72,24 +72,24 @@ public class MoveDAO {
       String sqlDeleteALL = "DELETE FROM " + schemaName + "." + tableName + ";";
       statement.executeUpdate(sqlDeleteALL);
     } else {
-      String sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE ";
+      String sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE";
       int count = 0;
       if (nodeID != null) {
         count++;
-        sqlDelete += "nodeID = " + nodeID;
+        sqlDelete += " nodeID = " + nodeID;
       }
       if (longName != null) {
-        if (count == 0) {
+        if (count > 0) {
           sqlDelete += " AND ";
         }
         count++;
-        sqlDelete += "longName = " + "\'" + longName + "\'";
+        sqlDelete += " longName = " + "\'" + longName + "\'";
       }
       if (moveDate != null) {
-        if (count == 0) {
+        if (count > 0) {
           sqlDelete += " AND ";
         }
-        sqlDelete += "moveDate =" + moveDate;
+        sqlDelete += " moveDate =\'" + moveDate + "\'";
       }
       sqlDelete += ";";
       statement.executeUpdate(sqlDelete);

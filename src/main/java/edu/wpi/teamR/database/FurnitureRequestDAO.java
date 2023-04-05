@@ -105,6 +105,38 @@ public class FurnitureRequestDAO {
     return aReq;
   }
 
+  public FurnitureRequest addFoodRequest(
+          String requesterName,
+          String location,
+          String furnitureType,
+          String staffMember,
+          String additionalNotes,
+          Timestamp requestDate,
+          RequestStatus requestStatus)
+          throws SQLException, ClassNotFoundException {
+    Connection connection = createConnection();
+    Statement statement = connection.createStatement();
+    PreparedStatement sqlInsert = connection.prepareStatement("INSERT INTO "+schemaName+"."+tableName
+            +"(requesterName,location,requestDate,additionalNotes,furnitureType,requestStatus,staffmemeber)"
+            +"VALUES ?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+    sqlInsert.executeUpdate();
+    ResultSet keys = sqlInsert.getGeneratedKeys();
+    int requestID = keys.getInt(1);
+    FurnitureRequest aFurnitureRequest =
+            new FurnitureRequest(
+                    requestID,
+                    requesterName,
+                    location,
+                    furnitureType,
+                    staffMember,
+                    additionalNotes,
+                    requestDate,
+                    requestStatus);
+    furnitureRequests.add(aFurnitureRequest);
+    closeConnection(connection);
+    return aFurnitureRequest;
+  }
+
   public void deleteFurnitureRequests(
       Integer requestID,
       String requesterName,

@@ -1,5 +1,6 @@
 package edu.wpi.teamR.controllers;
 
+import edu.wpi.teamR.database.*;
 import edu.wpi.teamR.fields.MealFields;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
@@ -9,6 +10,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class MealRequestController {
 
@@ -21,7 +28,7 @@ public class MealRequestController {
   @FXML MFXTextField notesField;
   @FXML ChoiceBox mealTypeBox;
 
-  private MealFields mealField;
+
 
   ObservableList<String> mealTypeList =
       FXCollections.observableArrayList("Chicken", "Beef", "Fish");
@@ -35,30 +42,40 @@ public class MealRequestController {
     mealTypeBox.setItems(mealTypeList);
   }
 
+  public Timestamp CurrentDateTime(){
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+      LocalDateTime now = LocalDateTime.now();
+      System.out.println(dtf.format(now));
+      return new Timestamp(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(),now.getMinute(),now.getSecond(),now.getNano());
+  }
+
   @FXML
-  public void submit() {
+  public void submit(){
     String mealType = mealTypeBox.getValue().toString();
     if (mealType == "Select Meal") {
       mealType = "";
     }
-    mealField =
-        new MealFields(
-            nameField.getText(),
-            locationField.getText(),
-            staffMemberField.getText(),
-            notesField.getText(),
-            mealType);
-    System.out.println(
-        mealField.getName()
-            + " "
-            + mealField.getLocation()
-            + " "
-            + mealField.getStaffMember()
-            + " "
-            + mealField.getNotes()
-            + " "
-            + mealField.getMeal());
     Navigation.navigate(Screen.HOME);
+    int id = 0;
+    ArrayList<FoodRequest> foodList = FoodRequestDAO.getInstance().getFoodRequests();
+    for(FoodRequest foodRequest: foodList){
+      if(id < foodRequest.getRequestID()){
+        id = foodRequest.getRequestID();
+      }
+    }
+    ArrayList<FurnitureRequest> furnList = FurnitureRequestDAO.getInstance().getFurnitureRequests();
+    for(FurnitureRequest furnitureRequest: furnList){
+      if(id < furnitureRequest.getRequestID()){
+        id = furnitureRequest.getRequestID();
+      }
+    }
+    id++;
+    try {
+      FoodRequestDAO.getInstance().addFoodRequest(id, nameField.getText(), locationField.getText(), mealType, staffMemberField.getText(), notesField.getText(), CurrentDateTime(), RequestStatus.Unstarted);
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
