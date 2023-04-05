@@ -19,7 +19,7 @@
                   <Font name="Times New Roman" size="48.0" />
                </font>
             </Text>
-            <TableView fx:id="requestTable" layoutX="94.0" layoutY="179.0" prefHeight="403.0" prefWidth="1092.0">
+            <TableView fx:id="requestTable" editable="true" layoutX="94.0" layoutY="179.0" prefHeight="403.0" prefWidth="1092.0">
               <columns>
                   <TableColumn fx:id="idColumn" prefWidth="103.33338165283203" text="ID Number" />
                 <TableColumn fx:id="nameColumn" prefWidth="115.33326721191406" text="Name" />
