@@ -1,5 +1,7 @@
 package edu.wpi.teamR.controllers;
 
+import edu.wpi.teamR.database.EdgeDAO;
+import edu.wpi.teamR.database.MoveDAO;
 import edu.wpi.teamR.database.Node;
 import edu.wpi.teamR.database.NodeDAO;
 import edu.wpi.teamR.navigation.Navigation;
@@ -98,6 +100,8 @@ public class UpdateNodesController {
         deleteButton.setOnAction(event -> {
           Node node = getTableView().getItems().get(getIndex());
           try {
+            EdgeDAO.getInstance().deleteAllEdges(node.getNodeID());
+            MoveDAO.getInstance().deleteMove(node.getNodeID(), null, null);
             dao.deleteNodes(node.getNodeID(), node.getXCoord(), node.getYCoord(), node.getFloorNum(), node.getBuilding());
           } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);

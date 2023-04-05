@@ -68,24 +68,24 @@ public class LocationNameDAO {
     if (longName == null && shortName == null && nodeType == null) {
       sqlDelete = "DELETE FROM " + schemaName + "." + tableName + ";";
     } else {
-      sqlDelete = "DELETE FROM " + schemaName + "."+tableName + " WHERE ";
+      sqlDelete = "DELETE FROM " + schemaName + "."+tableName + " WHERE";
       int count = 0;
       if (longName != null) {
         count++;
-        sqlDelete += "longName ="+"'"+longName+"'";
+        sqlDelete += " longName ="+"'"+longName+"'";
       }
       if (shortName != null) {
-        if(count == 0){
+        if(count > 0){
           sqlDelete+=" AND ";
         }
         count++;
-        sqlDelete += "shortName = " + "'" + shortName + "'";
+        sqlDelete += " shortName = " + "'" + shortName + "'";
       }
       if (nodeType != null) {
-        if(count == 0){
+        if(count > 0){
           sqlDelete+=" AND ";
         }
-        sqlDelete += "nodeType = " + "'" + nodeType + "'";
+        sqlDelete += " nodeType = " + "'" + nodeType + "'";
       }
       sqlDelete += ";";
     }
