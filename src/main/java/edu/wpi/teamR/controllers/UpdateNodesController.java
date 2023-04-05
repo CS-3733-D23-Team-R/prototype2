@@ -23,12 +23,11 @@ public class UpdateNodesController {
   @FXML TableColumn endNodeColumn;
 
   private ObservableList<Node> nodeTypeList =
-          FXCollections.observableArrayList()
+          FXCollections.observableArrayList();
 
   @FXML
   public void initialize() {
     backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
-    nodeIDColumn
 
   }
   @FXML
