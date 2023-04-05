@@ -5,6 +5,7 @@ import edu.wpi.teamR.database.*;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,6 +32,8 @@ public class SortOrdersController {
   @FXML TableColumn<ServiceRequest, String> timeColumn;
   @FXML TableColumn<ServiceRequest, String> statusColumn;
   @FXML MFXButton backButton;
+  FoodRequestDAO dao;
+  ObservableList<RequestStatus> statusList = FXCollections.observableArrayList(RequestStatus.values());
 
 
   @FXML
@@ -44,7 +47,7 @@ public class SortOrdersController {
     staffMemberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     notesColumn.setCellValueFactory(new PropertyValueFactory<>("additionalNotes"));
     timeColumn.setCellValueFactory(new PropertyValueFactory<>("requestDate"));
-    statusColumn.setCellValueFactory(new PropertyValueFactory<>("requestStatus"));
+    //statusColumn.setCellValueFactory(new PropertyValueFactory<>("requestStatus"));
     requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("itemType"));
     requestTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -67,6 +70,35 @@ public class SortOrdersController {
         throw new RuntimeException(e);
       }
 
+    });
+
+    //dao = FoodRequestDAO.createInstance(""
+
+    statusColumn.setCellFactory(column -> new TableCell<>() {
+      private final MFXComboBox<RequestStatus> changeStatusButton = new MFXComboBox<RequestStatus>(statusList);
+      {
+        //changeStatusButton.setText();
+        changeStatusButton.setOnAction(event -> {
+          FoodRequest request = (FoodRequest) getTableView().getItems().get(getIndex());
+          try {
+            RequestStatus status = changeStatusButton.getSelectionModel().getSelectedItem();
+            request.setRequestStatus(status);
+            FoodRequestDAO.getInstance().modifyFoodRequestByID(request.getRequestID(), request.getRequesterName(), request.getLocation(), request.getMealType(), request.getStaffMember(), request.getAdditionalNotes(), request.getRequestDate(), status);
+          } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+          }
+        });
+      }
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+
+        if (empty) {
+          setGraphic(null);
+        } else {
+          setGraphic(changeStatusButton);
+        }
+      }
     });
 
   }
