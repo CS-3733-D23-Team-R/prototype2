@@ -269,7 +269,9 @@ public class MapController {
     ArrayList<LocationName> locationNodes = locationNames.selectLocationNames(null, null, null);
     ArrayList<String> names = new ArrayList<String>();
     for (LocationName l: locationNodes) {
-      names.add(l.getLongName());
+      if(!l.getLongName().contains("Hall")) {
+        names.add(l.getLongName());
+      }
     }
     ObservableList<String> choices = FXCollections.observableArrayList(names);
     startField.setItems(choices);
