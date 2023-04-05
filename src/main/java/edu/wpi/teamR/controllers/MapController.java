@@ -10,14 +10,18 @@ import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javafx.animation.Interpolator;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.*;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -36,8 +40,10 @@ public class MapController {
   @FXML MFXButton floorDownButton;
   @FXML MFXCheckbox accessibleCheckbox;
 
-  @FXML MFXTextField startField;
-  @FXML MFXTextField endField;
+  @FXML
+  MFXComboBox<String> startField;
+  @FXML
+  MFXComboBox<String> endField;
 
   @FXML MFXButton homeButton;
   @FXML BorderPane borderPane;
@@ -46,6 +52,8 @@ public class MapController {
   @FXML GesturePane gesturePane;
 
   @FXML Text floorText;
+  @FXML MFXButton clearButton;
+  @FXML MFXCheckbox textCheckbox;
 
   URL groundFloorLink = Main.class.getResource("images/00_thegroundfloor.png");
   URL firstFloorLink = Main.class.getResource("images/01_thefirstfloor.png");
@@ -94,6 +102,7 @@ public class MapController {
     floorDownButton.setOnMouseClicked(event -> displayFloorDown());
     floorUpButton.setOnMouseClicked(event -> displayFloorUp());
     homeButton.setOnMouseClicked(event -> Navigation.navigate(Screen.HOME));
+    clearButton.setOnMouseClicked(event -> clearPath());
     searchButton.setOnMouseClicked(event -> {
       try {
         search();
@@ -102,6 +111,8 @@ public class MapController {
       }
     });
     floorText.setText(floorNames[currentFloor]);
+    startField.setValue("Select Start");
+    endField.setValue("Select End");
     reset();
 
     nodes = NodeDAO.createInstance(username, password, "node", schemaName, url);
@@ -109,7 +120,7 @@ public class MapController {
     locationNames = LocationNameDAO.createInstance(username, password, "locationName", schemaName, url);
     moves = MoveDAO.createInstance(username, password, "move", schemaName, url);
 
-    //displayPath();
+    setChoiceboxes();
   }
 
   // Reset to original zoom
@@ -147,8 +158,8 @@ public class MapController {
     create path between nodes on ALL floors
     create/display textual path? (would have to add spot to display)
      */
-    String start = startField.getText();
-    String end = endField.getText();
+    String start = startField.getValue().toString();
+    String end = endField.getValue().toString();
     Boolean isAccessible = accessibleCheckbox.isPressed();
     displayPath(start, end, isAccessible);
   }
@@ -224,5 +235,34 @@ public class MapController {
       throw new NotFoundException();
 
     return matchingMoves.get(newestMove).getNodeID();
+  }
+
+  private static String nameFromID(int nodeID) throws NotFoundException {
+    ArrayList<Move> matchingMoves = moves.selectMoves(nodeID, null, null);
+    int newestMove = -1;
+    long lowestDate = Long.MAX_VALUE;
+
+    for (int i = 0; i < matchingMoves.size(); i++){
+      long moveDate = matchingMoves.get(i).getMoveDate().getTime();
+      if (moveDate < lowestDate){
+        lowestDate = moveDate;
+        newestMove = i;
+      }
+    }
+    if (newestMove==-1)
+      throw new NotFoundException();
+
+    return matchingMoves.get(newestMove).getLongName();
+  }
+
+  void setChoiceboxes(){
+    ArrayList<LocationName> locationNodes = locationNames.selectLocationNames(null, null, null);
+    ArrayList<String> names = new ArrayList<String>();
+    for (LocationName l: locationNodes) {
+      names.add(l.getLongName());
+    }
+    ObservableList<String> choices = FXCollections.observableArrayList(names);
+    startField.setItems(choices);
+    endField.setItems(choices);
   }
 }
