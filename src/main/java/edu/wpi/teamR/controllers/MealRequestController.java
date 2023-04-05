@@ -1,5 +1,7 @@
 package edu.wpi.teamR.controllers;
 
+import edu.wpi.teamR.database.FoodRequestDAO;
+import edu.wpi.teamR.database.RequestStatus;
 import edu.wpi.teamR.fields.MealFields;
 import edu.wpi.teamR.navigation.Navigation;
 import edu.wpi.teamR.navigation.Screen;
@@ -9,6 +11,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class MealRequestController {
 
@@ -35,19 +42,19 @@ public class MealRequestController {
     mealTypeBox.setItems(mealTypeList);
   }
 
+  public Timestamp CurrentDateTime(){
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+      LocalDateTime now = LocalDateTime.now();
+      System.out.println(dtf.format(now));
+      return new Timestamp(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(),now.getMinute(),now.getSecond(),now.getNano());
+  }
+
   @FXML
   public void submit() {
     String mealType = mealTypeBox.getValue().toString();
     if (mealType == "Select Meal") {
       mealType = "";
     }
-    mealField =
-        new MealFields(
-            nameField.getText(),
-            locationField.getText(),
-            staffMemberField.getText(),
-            notesField.getText(),
-            mealType);
     System.out.println(
         mealField.getName()
             + " "
@@ -59,6 +66,15 @@ public class MealRequestController {
             + " "
             + mealField.getMeal());
     Navigation.navigate(Screen.HOME);
+    try{
+      FoodRequestDAO.getInstance().addFoodRequest(nameField.getText(),locationField.getText(), mealType, "unassigned", notesField.getText(), CurrentDateTime(), RequestStatus.Unstarted);
+    }
+    catch(SQLException e){
+      e.printStackTrace();
+    }
+    catch(ClassNotFoundException e){
+      e.printStackTrace();
+    }
   }
 
   @FXML
