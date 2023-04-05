@@ -17,11 +17,11 @@ public class UpdateNodesController {
   static NodeDAO dao;
   @FXML MFXButton backButton;
   @FXML TableView nodesTable;
-  @FXML
-  TableColumn nodeIDColumn;
-  @FXML TableColumn locationNameColumn;
-  @FXML TableColumn startNodeColumn;
-  @FXML TableColumn endNodeColumn;
+  @FXML TableColumn nodeIDColumn;
+  @FXML TableColumn xCoordinationColumn;
+  @FXML TableColumn yCoordinationColumn;
+  @FXML TableColumn floorColumn;
+  @FXML TableColumn buildingColumn;
 
   private ObservableList<Node> nodeTypeList =
           FXCollections.observableArrayList();
