@@ -10,7 +10,7 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
   private String longName, username, password, tableName, schemaName, connectionURL;
 
   private FoodRequestDAO(
-      String username, String password, String tableName, String schemaName, String connectionURL) throws SQLException, ClassNotFoundException {
+          String username, String password, String tableName, String schemaName, String connectionURL) throws SQLException, ClassNotFoundException {
     this.username = username;
     this.password = password;
     this.tableName = tableName;
@@ -36,10 +36,10 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
   }
 
   public static FoodRequestDAO createInstance(
-      String username, String password, String tableName, String schemaName, String connectionURL) throws SQLException, ClassNotFoundException {
+          String username, String password, String tableName, String schemaName, String connectionURL) throws SQLException, ClassNotFoundException {
     if (FoodRequestDAO.instance == null)
       FoodRequestDAO.instance =
-          new FoodRequestDAO(username, password, tableName, schemaName, connectionURL);
+              new FoodRequestDAO(username, password, tableName, schemaName, connectionURL);
     return FoodRequestDAO.instance;
   }
 
@@ -60,70 +60,102 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
           String additionalNotes,
           Timestamp requestDate,
           RequestStatus requestStatus)
-      throws SQLException, ClassNotFoundException {
+          throws SQLException, ClassNotFoundException {
     Connection connection = createConnection();
     Statement statement = connection.createStatement();
     String sqlInsert =
-        "INSERT INTO "
-            + schemaName
-            + "."
-            + tableName
-            + "(requestID, requesterName, location, requestDate, additionalNotes, mealType, requestStatus, staffmember) ";
+            "INSERT INTO "
+                    + schemaName
+                    + "."
+                    + tableName
+                    + "(requestID, requesterName, location, requestDate, additionalNotes, mealType, requestStatus, staffmember) ";
     sqlInsert +=
-        "VALUES("
-            + requestID
-            + ",\'"
-            + requesterName
-            + "\',\'"
-            + location
-            + "\',\'"
-            + requestDate
-            + "\',\'"
-            + additionalNotes
-            + "\',\'"
-            + mealType
-            + "\',\'"
-            + requestStatus.toString()
-            + "\',\'"
-            + staffMember
-            + "\');";
+            "VALUES("
+                    + requestID
+                    + ",\'"
+                    + requesterName
+                    + "\',\'"
+                    + location
+                    + "\',\'"
+                    + requestDate
+                    + "\',\'"
+                    + additionalNotes
+                    + "\',\'"
+                    + mealType
+                    + "\',\'"
+                    + requestStatus.toString()
+                    + "\',\'"
+                    + staffMember
+                    + "\');";
     FoodRequest aFoodRequest =
-        new FoodRequest(
-            requestID,
-            requesterName,
-            location,
-            mealType,
-            staffMember,
-            additionalNotes,
-            requestDate,
-            requestStatus);
+            new FoodRequest(
+                    requestID,
+                    requesterName,
+                    location,
+                    mealType,
+                    staffMember,
+                    additionalNotes,
+                    requestDate,
+                    requestStatus);
     statement.executeUpdate(sqlInsert);
     foodRequests.add(aFoodRequest);
     closeConnection(connection);
     return aFoodRequest;
   }
 
+  public FoodRequest addFoodRequest(
+          String requesterName,
+          String location,
+          String mealType,
+          String staffMember,
+          String additionalNotes,
+          Timestamp requestDate,
+          RequestStatus requestStatus)
+          throws SQLException, ClassNotFoundException {
+    Connection connection = createConnection();
+    Statement statement = connection.createStatement();
+    PreparedStatement sqlInsert = connection.prepareStatement("INSERT INTO "+schemaName+"."+tableName
+            +"(requesterName,location,requestDate,additionalNotes,mealType,requestStatus,staffmemeber)"
+            +"VALUES ?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+    sqlInsert.executeUpdate();
+    ResultSet keys = sqlInsert.getGeneratedKeys();
+    int requestID = keys.getInt(1);
+    FoodRequest aFoodRequest =
+            new FoodRequest(
+                    requestID,
+                    requesterName,
+                    location,
+                    mealType,
+                    staffMember,
+                    additionalNotes,
+                    requestDate,
+                    requestStatus);
+    foodRequests.add(aFoodRequest);
+    closeConnection(connection);
+    return aFoodRequest;
+  }
+
   public void deleteFoodRequests(
-      Integer requestID,
-      String requesterName,
-      String location,
-      String mealType,
-      String staffMember,
-      String additionalNotes,
-      Timestamp requestDate,
-      RequestStatus requestStatus)
-      throws SQLException, ClassNotFoundException {
+          Integer requestID,
+          String requesterName,
+          String location,
+          String mealType,
+          String staffMember,
+          String additionalNotes,
+          Timestamp requestDate,
+          RequestStatus requestStatus)
+          throws SQLException, ClassNotFoundException {
     Connection connection = createConnection();
     Statement statement = connection.createStatement();
     String sqlDelete;
     if (requestID == null
-        && requesterName == null
-        && location == null
-        && mealType == null
-        && staffMember == null
-        && additionalNotes == null
-        && requestDate == null
-        && requestStatus == null) {
+            && requesterName == null
+            && location == null
+            && mealType == null
+            && staffMember == null
+            && additionalNotes == null
+            && requestDate == null
+            && requestStatus == null) {
       sqlDelete = "DELETE FROM " + schemaName + "." + tableName + ";";
     } else {
       sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE ";
@@ -186,30 +218,30 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
     for (int i = 0; i < foodRequests.size(); i++) {
       Boolean requestIDCheck = requestID == null || requestID.equals(foodRequests.get(i).getRequestID());
       Boolean requesterNameCheck =
-          requesterName == null || requesterName.equals(foodRequests.get(i).getRequesterName());
+              requesterName == null || requesterName.equals(foodRequests.get(i).getRequesterName());
       Boolean locationCheck =
-          location == null || location.equals(foodRequests.get(i).getLocation());
+              location == null || location.equals(foodRequests.get(i).getLocation());
       Boolean mealTypeCheck =
-          mealType == null || mealType.equals(foodRequests.get(i).getMealType());
+              mealType == null || mealType.equals(foodRequests.get(i).getMealType());
       Boolean staffMemberCheck =
-          staffMember == null || staffMember.equals(foodRequests.get(i).getStaffMember());
+              staffMember == null || staffMember.equals(foodRequests.get(i).getStaffMember());
       Boolean additionalNotesCheck =
-          additionalNotes == null
-              || additionalNotes.equals(foodRequests.get(i).getAdditionalNotes());
+              additionalNotes == null
+                      || additionalNotes.equals(foodRequests.get(i).getAdditionalNotes());
       Boolean requestDateCheck =
-          requestDate == null
-              || requestDate.toString().equals(foodRequests.get(i).getRequestDate().toString());
+              requestDate == null
+                      || requestDate.toString().equals(foodRequests.get(i).getRequestDate().toString());
       Boolean requestStatusCheck =
-          requestStatus == null
-              || requestStatus.toString().equals(foodRequests.get(i).getRequestStatus().toString());
+              requestStatus == null
+                      || requestStatus.toString().equals(foodRequests.get(i).getRequestStatus().toString());
       if (requestIDCheck
-          && requesterNameCheck
-          && locationCheck
-          && mealTypeCheck
-          && staffMemberCheck
-          && additionalNotesCheck
-          && requestDateCheck
-          && requestStatusCheck) {
+              && requesterNameCheck
+              && locationCheck
+              && mealTypeCheck
+              && staffMemberCheck
+              && additionalNotesCheck
+              && requestDateCheck
+              && requestStatusCheck) {
         foodRequests.remove(i);
         i--;
       }
@@ -225,21 +257,21 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
           String additionalNotes,
           Timestamp requestDate,
           RequestStatus requestStatus)
-      throws SQLException, ClassNotFoundException {
+          throws SQLException, ClassNotFoundException {
     Connection connection = createConnection();
     Statement statement = connection.createStatement();
     String sqlUpdate =
-        "UPDATE " + schemaName + "." + tableName + " SET requesterName = '" + requesterName + "'";
+            "UPDATE " + schemaName + "." + tableName + " SET requesterName = '" + requesterName + "'";
     sqlUpdate +=
             ", location = '" + location + "', mealType = '" + mealType + "' , staffMember = '";
     sqlUpdate +=
-        staffMember + "' , additionalNotes = '" + additionalNotes + "' , requestDate = '";
+            staffMember + "' , additionalNotes = '" + additionalNotes + "' , requestDate = '";
     sqlUpdate += requestDate.toString() + "' , requestStatus = '" + requestStatus.toString();
     sqlUpdate += "' WHERE requestID = " + requestID + ";";
     statement.executeUpdate(sqlUpdate);
     closeConnection(connection);
     FoodRequest aFoodRequest =
-        selectFoodRequests(requestID, null, null, null, null, null, null, null).get(0);
+            selectFoodRequests(requestID, null, null, null, null, null, null, null).get(0);
     aFoodRequest.setRequesterName(requesterName);
     aFoodRequest.setLocation(location);
     aFoodRequest.setMealType(mealType);
@@ -250,14 +282,14 @@ public class FoodRequestDAO { // TODO: make sure tablename is the view
   }
 
   public ArrayList<FoodRequest> selectFoodRequests(
-      Integer requestID,
-      String requesterName,
-      String location,
-      String mealType,
-      String staffMember,
-      String additionalNotes,
-      Timestamp requestDate,
-      RequestStatus requestStatus) {
+          Integer requestID,
+          String requesterName,
+          String location,
+          String mealType,
+          String staffMember,
+          String additionalNotes,
+          Timestamp requestDate,
+          RequestStatus requestStatus) {
     ArrayList<FoodRequest> aList = new ArrayList<FoodRequest>();
     for (FoodRequest foodRequest : foodRequests) {
       Boolean requestIDCheck = requestID == null || requestID.equals(foodRequest.getRequestID());
