@@ -28,7 +28,7 @@ public class UpdateEdgeController{
     @FXML TableColumn<Edge, Integer> startNodeColumn;
     @FXML TableColumn<Edge, Integer> endNodeColumn;
 
-    static EdgeDAO eDAO;
+    EdgeDAO eDAO;
 
 
     @FXML

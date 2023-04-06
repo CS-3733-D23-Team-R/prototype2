@@ -32,7 +32,7 @@
          <children>
             <TableView fx:id="nodesTable" editable="true" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
               <columns>
-                <TableColumn fx:id="nodeIDColumn" prefWidth="200.0" text="nodeID" />
+                <TableColumn fx:id="nodeIDColumn" editable="false" prefWidth="200.0" text="nodeID" />
                 <TableColumn prefWidth="200.0" text="X-Coordinate" fx:id="xCoordinateColumn" />
                   <TableColumn fx:id="yCoordinateColumn" minWidth="0.0" prefWidth="200.0" text="Y-Coordinate" />
                   <TableColumn fx:id="floorColumn" prefWidth="231.5" text="Floor" />

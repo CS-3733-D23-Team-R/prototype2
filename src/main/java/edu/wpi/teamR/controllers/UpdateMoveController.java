@@ -41,17 +41,7 @@ public class UpdateMoveController{
     public void initialize() throws SQLException, ClassNotFoundException {
         backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
         setTableColumns();
-
-
-        nameColumn.setOnEditCommit(event -> {
-            Move move = event.getRowValue();
-            move.setLongName(event.getNewValue());
-            try {
-                dao.modifyMoveByID(move.getNodeID(), event.getNewValue(), move.getMoveDate());
-            } catch (SQLException | ClassNotFoundException | NotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        
         dateColumn.setOnEditCommit(event -> {
             Move move = event.getRowValue();
             java.sql.Date sqlDate = new java.sql.Date(event.getNewValue().getTime());
