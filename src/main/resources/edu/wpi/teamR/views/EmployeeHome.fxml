@@ -37,7 +37,22 @@
                   <Font name="Times New Roman" size="20.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="CSVReaderButton" layoutX="175.0" layoutY="360.0" text="CSV Reader">
+            <MFXButton fx:id="CSVReaderButton" layoutX="175.0" layoutY="545.0" text="CSV Import/Export">
+               <font>
+                  <Font name="Times New Roman" size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="updateMovesButton" layoutX="175.0" layoutY="353.0" text="Update Moves">
+               <font>
+                  <Font name="Times New Roman" size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="updateEdgesButton" layoutX="175.0" layoutY="414.0" text="Update Edges">
+               <font>
+                  <Font name="Times New Roman" size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton fx:id="updateLocationNamesButton" layoutX="175.0" layoutY="480.0" text="Update Location Names">
                <font>
                   <Font name="Times New Roman" size="20.0" />
                </font>

@@ -3,8 +3,6 @@ package edu.wpi.teamR.database;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class NodeDAO {
@@ -74,38 +72,38 @@ public class NodeDAO {
         if(nodeID == null && xCoord == null && yCoord == null && floorNum == null && building == null){
             sqlDelete = "DELETE FROM " + schemaName + "." + tableName + ";";
         } else{
-            sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE ";
+            sqlDelete = "DELETE FROM " + schemaName + "." + tableName + " WHERE";
             int count = 0;
             if(nodeID != null){
                 count++;
-                sqlDelete += "nodeID = " + nodeID;
+                sqlDelete += " nodeID = " + nodeID;
             }
             if(xCoord != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
                 count++;
-                sqlDelete += "xCoord = " + xCoord;
+                sqlDelete += " xCoord = " + xCoord;
             }
             if(yCoord != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
                 count++;
-                sqlDelete += "yCoord = " + yCoord;
+                sqlDelete += " yCoord = " + yCoord;
             }
             if(floorNum != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
                 count++;
-                sqlDelete += "floorNum = " + "'" + floorNum+ "'";
+                sqlDelete += " floorNum = " + "'" + floorNum+ "'";
             }
             if(building != null){
-                if(count == 0){
+                if(count > 0){
                     sqlDelete += " AND ";
                 }
-                sqlDelete += "building = " + "'" + building + "'";
+                sqlDelete += " building = " + "'" + building + "'";
             }
             sqlDelete += ";";
         }
@@ -113,8 +111,8 @@ public class NodeDAO {
         closeConnection(connection);
         for(int i = 0; i<nodes.size(); i++){
             Boolean nodeIDCheck = nodeID == null || nodeID.equals(nodes.get(i).getNodeID());
-            Boolean xCoordCheck = xCoord == null || xCoord.equals(nodes.get(i).getxCoord());
-            Boolean yCoordCheck = yCoord == null || yCoord.equals(nodes.get(i).getyCoord());
+            Boolean xCoordCheck = xCoord == null || xCoord.equals(nodes.get(i).getXCoord());
+            Boolean yCoordCheck = yCoord == null || yCoord.equals(nodes.get(i).getYCoord());
             Boolean floorNumCheck = floorNum == null || floorNum.equals(nodes.get(i).getFloorNum());
             Boolean buildingCheck = building == null || building.equals(nodes.get(i).getBuilding());
             if(nodeIDCheck && xCoordCheck && yCoordCheck && floorNumCheck && buildingCheck){
@@ -154,8 +152,8 @@ public class NodeDAO {
         ArrayList<Node> aList = new ArrayList<Node>();
         for (Node node : nodes) {
             Boolean nodeIDCheck = nodeID == null || nodeID.intValue() == node.getNodeID();
-            Boolean xCoordCheck = xCoord == null || xCoord.intValue() == node.getxCoord();
-            Boolean yCoordCheck = yCoord == null || yCoord.intValue() == node.getyCoord();
+            Boolean xCoordCheck = xCoord == null || xCoord.intValue() == node.getXCoord();
+            Boolean yCoordCheck = yCoord == null || yCoord.intValue() == node.getYCoord();
             Boolean floorNumCheck = floorNum == null || floorNum.equals(node.getFloorNum());
             Boolean buildingCheck = building == null || building.equals(node.getBuilding());
             if (nodeIDCheck && xCoordCheck && yCoordCheck && floorNumCheck && buildingCheck) {
@@ -180,8 +178,8 @@ public class NodeDAO {
         for(Node aNode : nodes){
             String line = "\n";
             line+= aNode.getNodeID() + ",";
-            line+= aNode.getxCoord() + ",";
-            line+= aNode.getyCoord() + ",";
+            line+= aNode.getXCoord() + ",";
+            line+= aNode.getYCoord() + ",";
             line+= aNode.getFloorNum() + ",";
             line+= aNode.getBuilding();
             outputFileWriter.write(line);

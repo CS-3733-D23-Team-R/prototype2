@@ -12,7 +12,10 @@ public enum Screen {
   LogIn("views/LogIn.fxml"),
   SortOrders("views/SortOrders.fxml"),
   NODES("views/UpdateNodes.fxml"),
-  EMPLOYEE("views/EmployeeHome.fxml");
+  EMPLOYEE("views/EmployeeHome.fxml"),
+  MOVES("views/UpdateMoves.fxml"),
+  EDGES("views/UpdateEdges.fxml"),
+  LOCATIONNAMES("views/UpdateLocationNames.fxml");
 
   private final String filename;
 

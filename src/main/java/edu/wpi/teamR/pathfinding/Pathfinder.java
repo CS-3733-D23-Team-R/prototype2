@@ -28,6 +28,7 @@ public class Pathfinder {
         PriorityQueue<QueueNode> pQueue = new PriorityQueue<>();
         pQueue.add(new QueueNode(startID, 0));
         int currentNode;
+        costSoFar.put(startID, 0);
         while(!pQueue.isEmpty()){
             currentNode = pQueue.remove().getNodeID();
 
@@ -40,8 +41,8 @@ public class Pathfinder {
                     continue;
                 }
                 int newCost = costSoFar.get(currentNode) + nodeDist(currentNode, neighbor);
-                if (costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
-                    costSoFar.replace(neighbor, newCost);
+                if (!costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)){
+                    costSoFar.put(neighbor, newCost);
                     int priority = newCost + hueristic(neighbor, endID);
                     pQueue.add(new QueueNode(neighbor, priority));
                     cameFrom.put(neighbor, currentNode);
@@ -54,6 +55,7 @@ public class Pathfinder {
             path.add(currentNode);
             currentNode = cameFrom.get(currentNode);
         }
+        path.add(startID);
 
         return path;
     }
@@ -92,8 +94,8 @@ public class Pathfinder {
         Node currNode = nodes.selectNodeByID(currentNodeID);
         Node nextNode = nodes.selectNodeByID(nextNodeID);
 
-        int xDif = abs(currNode.getxCoord() - nextNode.getxCoord());
-        int yDif = abs(currNode.getyCoord() - nextNode.getyCoord());
+        int xDif = abs(currNode.getXCoord() - nextNode.getXCoord());
+        int yDif = abs(currNode.getYCoord() - nextNode.getYCoord());
         int zDif = abs(floorNumAsInt(currNode.getFloorNum()) - floorNumAsInt(nextNode.getFloorNum()));
 
         if (findNodeType(currentNodeID).equals("STAI") && findNodeType(nextNodeID).equals("STAI")) {
@@ -109,9 +111,14 @@ public class Pathfinder {
     private int floorNumAsInt(String floorNum){
         int output;
         switch(floorNum){
-            case "L1": output = 1;
-            case "L2": output = 0;
-            default: output = Integer.parseInt(floorNum) + 1;
+            case "L1":
+                output = 1;
+                break;
+            case "L2":
+                output = 0;
+                break;
+            default:
+                output = Integer.parseInt(floorNum) + 1;
         }
         return output;
     }
