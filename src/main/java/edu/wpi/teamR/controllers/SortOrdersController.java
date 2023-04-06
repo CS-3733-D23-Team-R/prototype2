@@ -77,7 +77,7 @@ public class SortOrdersController {
     statusColumn.setCellFactory(column -> new TableCell<>() {
       private final MFXComboBox<RequestStatus> changeStatusButton = new MFXComboBox<RequestStatus>(statusList);
       {
-        //changeStatusButton.setText();
+        //changeStatusButton.setValue();
         changeStatusButton.setOnAction(event -> {
           FoodRequest request = (FoodRequest) getTableView().getItems().get(getIndex());
           try {
@@ -96,6 +96,8 @@ public class SortOrdersController {
         if (empty) {
           setGraphic(null);
         } else {
+          ServiceRequest sr = getTableView().getItems().get(getIndex());
+          changeStatusButton.getSelectionModel().selectItem(sr.getRequestStatus());
           setGraphic(changeStatusButton);
         }
       }
