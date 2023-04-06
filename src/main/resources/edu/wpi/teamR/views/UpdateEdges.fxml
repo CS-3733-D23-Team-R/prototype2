@@ -25,7 +25,7 @@
     <center>
         <AnchorPane BorderPane.alignment="CENTER">
             <children>
-                <TableView fx:id="nodesTable" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
+                <TableView fx:id="nodesTable" editable="true" layoutX="51.0" layoutY="111.0" prefHeight="342.0" prefWidth="1180.0">
                     <columns>
                         <TableColumn fx:id="startNodeColumn" prefWidth="588.6666564941406" text="Start Node" />
                         <TableColumn fx:id="endNodeColumn" prefWidth="590.3333435058594" text="End Node" />
