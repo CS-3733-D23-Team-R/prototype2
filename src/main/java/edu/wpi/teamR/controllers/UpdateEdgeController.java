@@ -13,7 +13,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,7 +38,9 @@ public class UpdateEdgeController{
         backButton.setOnMouseClicked(event -> Navigation.navigate(Screen.EMPLOYEE));
         nodesTable.setItems(edgeList);
         startNodeColumn.setCellValueFactory(new PropertyValueFactory<>("startNode"));
+        startNodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         endNodeColumn.setCellValueFactory(new PropertyValueFactory<>("endNode"));
+        endNodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         nodesTable.getColumns().setAll(startNodeColumn, endNodeColumn);
 
         startNodeColumn.setOnEditCommit(event -> {
