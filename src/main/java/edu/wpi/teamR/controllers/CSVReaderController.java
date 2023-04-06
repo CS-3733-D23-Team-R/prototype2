@@ -37,7 +37,7 @@ public class CSVReaderController {
   @FXML
   MFXComboBox<String> exportMenu;
   ObservableList<String> DAOType =
-          FXCollections.observableArrayList("Node", "Edge", "LocationName", "Move");
+          FXCollections.observableArrayList("Node", "Edge", "LocationName", "Moves");
   FileChooser fileChooser;
 
   DirectoryChooser directoryChooser;

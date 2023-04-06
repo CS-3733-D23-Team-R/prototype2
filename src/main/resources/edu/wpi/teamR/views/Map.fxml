@@ -21,17 +21,17 @@
             <MFXButton fx:id="floorDownButton" buttonType="RAISED" layoutX="20.0" layoutY="631.0" text="Floor Down" />
             <MFXCheckbox fx:id="accessibleCheckbox" layoutX="108.0" layoutY="349.0" />
             <MFXButton fx:id="searchButton" buttonType="RAISED" layoutX="91.0" layoutY="474.0" text="Search" />
-            <Text layoutX="49.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Location">
+            <Text fill="WHITE" layoutX="49.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Location">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="55.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Location">
+            <Text fill="WHITE" layoutX="55.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Location">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="8.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Accessible Directions">
+            <Text fill="WHITE" layoutX="8.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Accessible Directions">
                <font>
                   <Font size="24.0" />
                </font>
@@ -39,7 +39,7 @@
             <MFXButton fx:id="resetButton" buttonType="RAISED" layoutX="94.0" layoutY="575.0" text="Reset" />
             <MFXButton fx:id="homeButton" buttonType="RAISED" layoutX="7.0" layoutY="691.0" text="Home" />
             <MFXCheckbox fx:id="textCheckbox" layoutX="108.0" layoutY="434.0" />
-            <Text layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Display Text Directions">
+            <Text fill="WHITE" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Display Text Directions">
                <font>
                   <Font size="24.0" />
                </font>
